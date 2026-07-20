@@ -24,6 +24,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install test deps
+        run: pip install pytest
+
       - name: Run tests
         run: python -m pytest tests/ -q
 
