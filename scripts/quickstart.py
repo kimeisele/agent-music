@@ -16,6 +16,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 GREEN = "\033[32m"
 RED = "\033[31m"
+YELLOW = "\033[33m"
+CYAN = "\033[36m"
 BOLD = "\033[1m"
 RESET = "\033[0m"
 
@@ -64,12 +66,12 @@ def _check_topic() -> bool | None:
     """
     try:
         result = subprocess.run(
-            ["gh", "repo", "view", "--json", "topics"],
+            ["gh", "repo", "view", "--json", "repositoryTopics"],
             capture_output=True, text=True, timeout=10, cwd=str(REPO_ROOT),
         )
         if result.returncode == 0:
-            topics: list[str] = json.loads(result.stdout).get("topics", [])
-            return "agent-federation-node" in topics
+            topic_objs: list[dict] = json.loads(result.stdout).get("repositoryTopics", [])
+            return any(t.get("name") == "agent-federation-node" for t in topic_objs)
     except (FileNotFoundError, subprocess.TimeoutExpired, json.JSONDecodeError):
         pass
     return None

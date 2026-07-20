@@ -6,3 +6,10 @@ __pycache__/
 .agent-internet/
 # Node crypto keys — never commit
 data/federation/.node_keys.json
+
+# Generated audio — only on render branch
+*.wav
+render.json
+render_output.json
+render.log
+prev_render.json

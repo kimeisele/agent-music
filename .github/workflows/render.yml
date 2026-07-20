@@ -1,0 +1,91 @@
+name: Agent Music Render
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-music-render
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run tests
+        run: python -m pytest tests/ -q
+
+      - name: Render federation audio
+        id: render
+        run: |
+          python -m agent_music.cli render \
+            --config config/federation.json \
+            --output federation.wav 2>&1 | tee render.log
+          tail -1 render.log > render_output.json
+
+      - name: Read current semantic hash
+        id: hash
+        run: |
+          NEW_HASH=$(python -c "import json; print(json.load(open('render_output.json'))['semantic_snapshot_sha256'])")
+          echo "new_hash=$NEW_HASH" >> $GITHUB_OUTPUT
+          echo "New semantic hash: $NEW_HASH"
+
+      - name: Fetch previous render state
+        id: prev
+        continue-on-error: true
+        run: |
+          git fetch origin render 2>/dev/null || true
+          if git show origin/render:render.json 2>/dev/null > prev_render.json; then
+            PREV_HASH=$(python -c "import json; print(json.load(open('prev_render.json'))['semantic_snapshot_sha256'])")
+            echo "prev_hash=$PREV_HASH" >> $GITHUB_OUTPUT
+            echo "Previous semantic hash: $PREV_HASH"
+          else
+            echo "prev_hash=" >> $GITHUB_OUTPUT
+            echo "No previous render found"
+          fi
+
+      - name: Check for changes
+        id: check
+        run: |
+          if [ "${{ steps.hash.outputs.new_hash }}" = "${{ steps.prev.outputs.prev_hash }}" ]; then
+            echo "Federation state unchanged — skipping render"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Federation state changed — publishing new render"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create render metadata
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          cp render_output.json render.json
+          echo "Metadata prepared"
+
+      - name: Publish to render branch
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          # Create a temporary worktree on an orphan render branch
+          git checkout --orphan render-new
+          git rm -rf --cached . 2>/dev/null || true
+          cp federation.wav render.json /tmp/
+          rm -rf ./*
+          cp /tmp/federation.wav /tmp/render.json .
+          git add federation.wav render.json
+          git config user.name "agent-music[bot]"
+          git config user.email "agent-music[bot]@users.noreply.github.com"
+          git commit -m "render: update federation sound [state ${NEW_HASH:0:8}]"
+          git push origin render-new:render --force
+        env:
+          NEW_HASH: ${{ steps.hash.outputs.new_hash }}

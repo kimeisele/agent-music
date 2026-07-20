@@ -3,35 +3,57 @@
     "pushNotifications": false,
     "streaming": false
   },
-  "description": "Agent Template \u2014 a federation node",
+  "description": "The Agent Federation rendered as music \u2014 an autonomous observer that periodically translates live node activity, message flows, and network pulse into one evolving audio file.",
   "federation": {
     "authority_feed_branch": "authority-feed",
     "descriptor_path": ".well-known/agent-federation.json",
     "interfaces": {
-      "consumes": [],
-      "produces": [
+      "consumes": [
         "authority_document",
-        "canonical_surface"
+        "federation_descriptor",
+        "nadi_outbox",
+        "agent_card"
+      ],
+      "produces": [
+        "canonical_surface",
+        "observer_render",
+        "federation_audio"
       ],
       "protocols": [
-        "authority_feed_v1"
+        "authority_feed_v1",
+        "observer_render_v1"
       ]
     },
-    "node_role": "agent_template_relay",
+    "node_role": "observer",
     "node_topic": "agent-federation-node",
     "peer_discovery": true
   },
-  "name": "Agent Template",
+  "name": "Agent Music",
   "provider": {
     "organization": "kimeisele"
   },
   "skills": [
     {
-      "description": "Authority Publishing capability.",
-      "id": "authority-publishing",
-      "name": "Authority Publishing"
+      "description": "Periodically collects federation state from protocol surfaces.",
+      "id": "federation-observation",
+      "name": "Federation Observation"
+    },
+    {
+      "description": "Deterministically translates normalized federation state into melodic audio.",
+      "id": "musical-composition",
+      "name": "Musical Composition"
+    },
+    {
+      "description": "Synthesizes WAV audio from composed musical events using standard library oscillators.",
+      "id": "audio-synthesis",
+      "name": "Audio Synthesis"
+    },
+    {
+      "description": "Semantic hashing prevents redundant renders when federation state is unchanged.",
+      "id": "change-detection",
+      "name": "Change Detection"
     }
   ],
-  "url": "https://github.com/kimeisele/agent-template",
+  "url": "https://github.com/kimeisele/agent-music",
   "version": "1.0.0"
 }

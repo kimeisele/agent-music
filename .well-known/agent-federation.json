@@ -1,7 +1,10 @@
 {
   "authority_feed_manifest_url": "https://raw.githubusercontent.com/kimeisele/agent-music/authority-feed/latest-authority-manifest.json",
   "capabilities": [
-    "authority-publishing"
+    "federation-observation",
+    "musical-composition",
+    "audio-synthesis",
+    "change-detection"
   ],
   "display_name": "Agent Music",
   "endpoints": {

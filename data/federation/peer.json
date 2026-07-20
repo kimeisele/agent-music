@@ -1,18 +1,20 @@
 {
   "identity": {
-    "city_id": "agent-template",
-    "slug": "agent-template",
-    "repo": "kimeisele/agent-template",
+    "city_id": "agent-music",
+    "slug": "agent-music",
+    "repo": "kimeisele/agent-music",
     "public_key": ""
   },
   "endpoint": {
-    "city_id": "agent-template",
+    "city_id": "agent-music",
     "transport": "filesystem",
     "location": "data/federation"
   },
   "capabilities": [
-    "scaffolding",
-    "federation_relay"
+    "authority-publishing",
+    "research-synthesis",
+    "cross-domain-analysis",
+    "open-inquiry"
   ],
   "nadi": {
     "outbox": "data/federation/nadi_outbox.json",

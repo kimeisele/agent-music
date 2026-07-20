@@ -1,0 +1,205 @@
+{
+  "flows": {
+    "agent-internet>agent-city": 10,
+    "agent-internet>agent-research": 41,
+    "agent-internet>hermes-sankhya-25": 5,
+    "agent-internet>steward": 88,
+    "agent-research>agent-internet": 3,
+    "agent-world>agent-internet": 1,
+    "hermes-sankhya-25>agent-internet": 2,
+    "steward>agent-city": 12,
+    "steward>agent-internet": 9,
+    "steward>agent-research": 8,
+    "steward>hermes-sankhya-25": 15,
+    "steward>steward-federation": 8
+  },
+  "generated_at": "2026-07-20T05:11:12Z",
+  "nodes": {
+    "agent-city": {
+      "capabilities": [
+        "code_execution",
+        "economy",
+        "federation_bridge",
+        "governance",
+        "immigration"
+      ],
+      "depth": 0,
+      "depth_bin": 0,
+      "flow_sources": [],
+      "flow_targets": {},
+      "has_authority_feed": false,
+      "layer": "node",
+      "node_name": "agent-city",
+      "outbox_reachable": true,
+      "repo_id": "kimeisele/agent-city",
+      "role": "GOVERNANCE",
+      "status": "ACTIVE"
+    },
+    "agent-internet": {
+      "capabilities": [
+        "authority-projection",
+        "federation-discovery",
+        "lotus-addressing",
+        "nadi-relay",
+        "semantic-search"
+      ],
+      "depth": 144,
+      "depth_bin": 4,
+      "flow_sources": [
+        "agent-internet"
+      ],
+      "flow_targets": {
+        "agent-city": 10,
+        "agent-research": 41,
+        "hermes-sankhya-25": 5,
+        "steward": 88
+      },
+      "has_authority_feed": false,
+      "layer": "internet",
+      "node_name": "agent-internet",
+      "outbox_reachable": true,
+      "repo_id": "kimeisele/agent-internet",
+      "role": "RELAY",
+      "status": "ACTIVE"
+    },
+    "agent-research": {
+      "capabilities": [
+        "cross_domain_analysis",
+        "meta_analysis",
+        "methodology_review",
+        "open_inquiry",
+        "research_synthesis"
+      ],
+      "depth": 3,
+      "depth_bin": 1,
+      "flow_sources": [
+        "agent-research"
+      ],
+      "flow_targets": {
+        "agent-internet": 3
+      },
+      "has_authority_feed": true,
+      "layer": "node",
+      "node_name": "agent-research",
+      "outbox_reachable": true,
+      "repo_id": "agent-research",
+      "role": "RESEARCH",
+      "status": "ACTIVE"
+    },
+    "agent-world": {
+      "capabilities": [
+        "authority-publishing",
+        "inquiry-response",
+        "public_wiki",
+        "world_registry"
+      ],
+      "depth": 1,
+      "depth_bin": 1,
+      "flow_sources": [
+        "agent-world"
+      ],
+      "flow_targets": {
+        "agent-internet": 1
+      },
+      "has_authority_feed": true,
+      "layer": "node",
+      "node_name": "agent-world",
+      "outbox_reachable": true,
+      "repo_id": "kimeisele/agent-world",
+      "role": "OUTPOST",
+      "status": "ACTIVE"
+    },
+    "hermes-sankhya-25": {
+      "capabilities": [
+        "authority-publishing",
+        "inquiry-response"
+      ],
+      "depth": 2,
+      "depth_bin": 1,
+      "flow_sources": [
+        "hermes-sankhya-25"
+      ],
+      "flow_targets": {
+        "agent-internet": 2
+      },
+      "has_authority_feed": true,
+      "layer": "node",
+      "node_name": "hermes-sankhya-25",
+      "outbox_reachable": true,
+      "repo_id": "hermes-sankhya-25",
+      "role": "OUTPOST",
+      "status": "ACTIVE"
+    },
+    "steward": {
+      "capabilities": [
+        "autonomous_daemon",
+        "ci_automation",
+        "code_analysis",
+        "federation_bridge",
+        "task_execution"
+      ],
+      "depth": 52,
+      "depth_bin": 4,
+      "flow_sources": [
+        "steward"
+      ],
+      "flow_targets": {
+        "agent-city": 12,
+        "agent-internet": 9,
+        "agent-research": 8,
+        "hermes-sankhya-25": 15,
+        "steward-federation": 8
+      },
+      "has_authority_feed": true,
+      "layer": "node",
+      "node_name": "steward",
+      "outbox_reachable": true,
+      "repo_id": "kimeisele/steward",
+      "role": "EXECUTION",
+      "status": "ACTIVE"
+    },
+    "steward-protocol": {
+      "capabilities": [
+        "authority-publishing",
+        "canonical-surface",
+        "protocol-definition",
+        "public-summary"
+      ],
+      "depth": 0,
+      "depth_bin": 0,
+      "flow_sources": [],
+      "flow_targets": {},
+      "has_authority_feed": true,
+      "layer": "protocol",
+      "node_name": "steward-protocol",
+      "outbox_reachable": true,
+      "repo_id": "kimeisele/steward-protocol",
+      "role": "OUTPOST",
+      "status": "ACTIVE"
+    },
+    "steward-test": {
+      "capabilities": [
+        "healing-sandbox",
+        "test-execution",
+        "test-target"
+      ],
+      "depth": 0,
+      "depth_bin": 0,
+      "flow_sources": [],
+      "flow_targets": {},
+      "has_authority_feed": false,
+      "layer": "node",
+      "node_name": "steward-test",
+      "outbox_reachable": true,
+      "repo_id": "kimeisele/steward-test",
+      "role": "TEMPLATE",
+      "status": "ACTIVE"
+    }
+  },
+  "summary": {
+    "communicating": 5,
+    "feeds": 5,
+    "in_flight": 202,
+    "total_nodes": 8
+  }
+}
