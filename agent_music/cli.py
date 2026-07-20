@@ -2,9 +2,10 @@
 
 Separated lifecycle:
   snapshot  — discover → validate → collect → normalize → write files
-  render    — read snapshot → check hash → compose → synth → write WAV
+  compose   — snapshot → canonical Composition → composition.json
+  render    — load Composition → synth WAV + render SVG → publish
 
-Machine-readable output goes to files (--metadata-output), not stdout.
+Machine output goes to files, not stdout.
 """
 
 from __future__ import annotations
@@ -16,10 +17,10 @@ import sys
 import time
 from pathlib import Path
 
-from .collect import collect_federation_state, CollectionResult
+from .collect import collect_federation_state
 from .discovery import DiscoveryConfig
 from .normalize import NormalizedSnapshot
-from .compose import compose
+from .compose import compose, validate_composition
 from .synth import synth, samples_to_pcm, SAMPLE_RATE
 from .wav import write_wav, validate_wav
 
@@ -28,7 +29,6 @@ DEFAULT_CONFIG = REPO_ROOT / "config" / "federation.json"
 
 
 def _load_discovery_config(config_path: str | None) -> DiscoveryConfig:
-    """Load discovery configuration from JSON, validating ranges."""
     if config_path is None:
         config_path = str(DEFAULT_CONFIG)
     cfg = Path(config_path)
@@ -45,7 +45,6 @@ def _load_discovery_config(config_path: str | None) -> DiscoveryConfig:
 
 
 def _load_outbox_path(config_path: str | None) -> str:
-    """Load the outbox path from config, or use the default."""
     if config_path is None:
         config_path = str(DEFAULT_CONFIG)
     cfg = Path(config_path)
@@ -55,8 +54,10 @@ def _load_outbox_path(config_path: str | None) -> str:
     return "data/federation/nadi_outbox.json"
 
 
+# ── snapshot ────────────────────────────────────────────────────────────────
+
+
 def cmd_snapshot(args: argparse.Namespace) -> int:
-    """Discover, validate, collect, normalize → write snapshot + metadata."""
     discovery_config = _load_discovery_config(args.config)
     outbox_path = _load_outbox_path(args.config)
 
@@ -75,12 +76,10 @@ def cmd_snapshot(args: argparse.Namespace) -> int:
     snapshot.observed_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     semantic_hash = snapshot.semantic_hash()
 
-    # Write serialized NormalizedSnapshot (not raw topology)
     snapshot_out = Path(args.output)
     snapshot_out.parent.mkdir(parents=True, exist_ok=True)
     snapshot_out.write_bytes(snapshot.to_json_bytes())
 
-    # Write metadata
     meta = {
         "schema_version": 1,
         "semantic_snapshot_sha256": semantic_hash,
@@ -103,16 +102,15 @@ def cmd_snapshot(args: argparse.Namespace) -> int:
     return 0
 
 
-def cmd_render(args: argparse.Namespace) -> int:
-    """Read snapshot → hash check → compose → synth → write WAV."""
-    from .normalize import NormalizedSnapshot
+# ── compose ─────────────────────────────────────────────────────────────────
 
+
+def cmd_compose(args: argparse.Namespace) -> int:
     snapshot_path = Path(args.input)
     if not snapshot_path.exists():
         print(f"ERROR: Snapshot not found: {args.input}", file=sys.stderr)
         return 1
 
-    # Deserialize NormalizedSnapshot (NOT raw topology)
     try:
         data = json.loads(snapshot_path.read_bytes())
         snapshot = NormalizedSnapshot.from_dict(data)
@@ -120,100 +118,133 @@ def cmd_render(args: argparse.Namespace) -> int:
         print(f"ERROR: Invalid snapshot: {e}", file=sys.stderr)
         return 1
 
-    semantic_hash = snapshot.semantic_hash()
+    composition = compose(snapshot)
+    errs = validate_composition(composition)
+    if errs:
+        for e in errs:
+            print(f"Composition validation: {e}", file=sys.stderr)
+        return 1
 
-    # ── Change detection: check previous hash BEFORE synthesis ────────
+    out = Path(args.output)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_bytes(composition.to_artifact_json_bytes())
+
+    comp_hash = composition.semantic_hash()
+    print(f"Composition: {out}", file=sys.stderr)
+    print(f"Composition hash: {comp_hash[:16]}...", file=sys.stderr)
+    print(f"Voices: {len(composition.voices)}, Events: {len(composition.events)}", file=sys.stderr)
+    if any(e.provenance.get("pair_id") for e in composition.events):
+        pair_count = len({e.provenance.get("pair_id") for e in composition.events if e.provenance.get("pair_id")})
+        print(f"Flow pairs: {pair_count}", file=sys.stderr)
+    return 0
+
+
+# ── render ──────────────────────────────────────────────────────────────────
+
+
+def cmd_render(args: argparse.Namespace) -> int:
+    from .compose import Composition
+
+    comp_path = Path(args.input)
+    if not comp_path.exists():
+        print(f"ERROR: Composition not found: {args.input}", file=sys.stderr)
+        return 1
+
+    try:
+        data = json.loads(comp_path.read_bytes())
+        composition = Composition.from_dict(data)
+    except (json.JSONDecodeError, ValueError) as e:
+        print(f"ERROR: Invalid composition: {e}", file=sys.stderr)
+        return 1
+
+    # ── Change detection ──────────────────────────────────────────────
     prev_hash = _load_previous_hash(args.prev_metadata)
-    if prev_hash and prev_hash == semantic_hash:
+    if prev_hash and prev_hash == composition.semantic_snapshot_sha256:
         print("Federation state unchanged — skipping render", file=sys.stderr)
         meta = {
-            "schema_version": 1,
-            "semantic_snapshot_sha256": semantic_hash,
+            "schema_version": 2,
+            "semantic_snapshot_sha256": composition.semantic_snapshot_sha256,
+            "composition_sha256": composition.composition_sha256,
             "audio_sha256": "",
+            "wav_sha256": "",
+            "svg_sha256": "",
             "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "duration_sec": 0,
+            "loop_duration_sec": 0,
+            "repeat_count": 0,
+            "event_count": 0,
+            "voice_count": 0,
             "state_changed": False,
         }
-        meta_path = Path(args.metadata_output)
-        meta_path.parent.mkdir(parents=True, exist_ok=True)
-        meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n")
+        Path(args.metadata_output).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.metadata_output).write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n")
         return 0
 
-    # ── Compose ───────────────────────────────────────────────────────
-    composition = compose(snapshot)
-    loop_dur = composition.loop_duration_seconds()
-    repeats = composition.repeat_count()
-    total_dur = loop_dur * repeats
-    print(
-        f"Tempo: {composition.tempo:.0f} BPM · "
-        f"Loop: {loop_dur:.1f}s · "
-        f"Repeats: {repeats} · "
-        f"Total: {total_dur:.0f}s",
-        file=sys.stderr,
-    )
-
-    # ── Synthesize ────────────────────────────────────────────────────
+    # ── Synthesize WAV ────────────────────────────────────────────────
     loop_samples = synth(composition)
-    all_samples = loop_samples * repeats
+    all_samples = loop_samples * composition.repeat_count
 
-    # Crossfade loop boundaries
     if len(loop_samples) > 0:
         fade_len = min(int(0.005 * SAMPLE_RATE), len(loop_samples))
         if fade_len > 0:
             for i in range(fade_len):
                 if i < len(all_samples) - fade_len:
-                    fade = i / fade_len
                     idx_end = len(all_samples) - fade_len + i
                     if idx_end < len(all_samples):
-                        all_samples[idx_end] *= (1.0 - fade)
-                for r in range(1, repeats):
+                        all_samples[idx_end] *= (1.0 - i / fade_len)
+                for r in range(1, composition.repeat_count):
                     idx = r * len(loop_samples) + i
                     if idx < len(all_samples):
                         all_samples[idx] *= i / fade_len
 
-    # Normalize
     peak = max(abs(s) for s in all_samples) if all_samples else 0.0
     if peak > 0.0:
         scale = 0.9 / peak
         all_samples = [s * scale for s in all_samples]
 
     pcm = samples_to_pcm(all_samples)
+    wav_path = Path(args.wav_output)
+    write_wav(wav_path, pcm, sample_rate=SAMPLE_RATE)
 
-    # ── Write WAV ─────────────────────────────────────────────────────
-    output_path = Path(args.output)
-    write_wav(output_path, pcm, sample_rate=SAMPLE_RATE)
+    wav_validation = validate_wav(wav_path)
+    audio_sha256 = hashlib.sha256(pcm).hexdigest()      # PCM bytes (existing)
+    wav_sha256 = hashlib.sha256(wav_path.read_bytes()).hexdigest()  # complete file
 
-    # Validate
-    validation = validate_wav(output_path)
-    if not validation["valid"]:
-        print("WAV validation warnings:", file=sys.stderr)
-        for err in validation["errors"]:
-            print(f"  - {err}", file=sys.stderr)
+    # ── Render SVG ────────────────────────────────────────────────────
+    from .score_svg import render_svg, validate_svg
+    svg_path = Path(args.svg_output)
+    svg_result = render_svg(composition, svg_path)
+    svg_validation = validate_svg(svg_path, composition)
 
-    audio_sha256 = hashlib.sha256(pcm).hexdigest()
-
-    # Write metadata
+    # ── Write metadata ────────────────────────────────────────────────
     meta = {
-        "schema_version": 1,
-        "semantic_snapshot_sha256": semantic_hash,
+        "schema_version": 2,
+        "semantic_snapshot_sha256": composition.semantic_snapshot_sha256,
+        "composition_sha256": composition.composition_sha256,
         "audio_sha256": audio_sha256,
-        "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "duration_sec": validation["duration_sec"],
+        "wav_sha256": wav_sha256,
+        "svg_sha256": svg_result["svg_sha256"],
+        "duration_sec": wav_validation["duration_sec"],
+        "loop_duration_sec": composition.loop_duration_seconds,
+        "repeat_count": composition.repeat_count,
+        "event_count": len(composition.events),
+        "voice_count": len(composition.voices),
         "state_changed": True,
+        "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
-    meta_path = Path(args.metadata_output)
-    meta_path.parent.mkdir(parents=True, exist_ok=True)
-    meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n")
+    Path(args.metadata_output).parent.mkdir(parents=True, exist_ok=True)
+    Path(args.metadata_output).write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n")
 
-    print(f"WAV written: {output_path}", file=sys.stderr)
-    print(f"Duration: {validation['duration_sec']:.1f}s · "
-          f"Peak: {validation['peak']:.2f} · "
-          f"Has audio: {validation['has_audio']}", file=sys.stderr)
+    print(f"WAV: {wav_path}", file=sys.stderr)
+    print(f"SVG: {svg_path}", file=sys.stderr)
+    print(f"Duration: {wav_validation['duration_sec']:.1f}s", file=sys.stderr)
+    print(f"PCM SHA-256: {audio_sha256[:16]}...", file=sys.stderr)
+    print(f"WAV SHA-256: {wav_sha256[:16]}...", file=sys.stderr)
+    print(f"SVG SHA-256: {svg_result['svg_sha256'][:16]}...", file=sys.stderr)
     return 0
 
 
 def _load_previous_hash(prev_meta_path: str | None) -> str | None:
-    """Load previous semantic hash from a render metadata file."""
     if prev_meta_path is None:
         return None
     p = Path(prev_meta_path)
@@ -226,9 +257,12 @@ def _load_previous_hash(prev_meta_path: str | None) -> str | None:
         return None
 
 
+# ── main ────────────────────────────────────────────────────────────────────
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Agent Music — Federation state → deterministic WAV audio",
+        description="Agent Music — Federation state → deterministic WAV + SVG",
     )
     sub = parser.add_subparsers(dest="command")
 
@@ -237,9 +271,14 @@ def main() -> int:
     snap.add_argument("--output", default="snapshot.json", help="Output snapshot JSON path")
     snap.add_argument("--metadata-output", default="snapshot-meta.json", help="Metadata output path")
 
-    rndr = sub.add_parser("render", help="Render snapshot to WAV")
-    rndr.add_argument("--input", required=True, help="Input snapshot JSON")
-    rndr.add_argument("--output", default="federation.wav", help="Output WAV path")
+    comp = sub.add_parser("compose", help="Compose snapshot into canonical Composition")
+    comp.add_argument("--input", required=True, help="Input snapshot JSON")
+    comp.add_argument("--output", default="composition.json", help="Output composition JSON path")
+
+    rndr = sub.add_parser("render", help="Render composition to WAV + SVG")
+    rndr.add_argument("--input", required=True, help="Input composition JSON")
+    rndr.add_argument("--wav-output", default="federation.wav", help="Output WAV path")
+    rndr.add_argument("--svg-output", default="federation.svg", help="Output SVG path")
     rndr.add_argument("--metadata-output", default="render.json", help="Metadata output path")
     rndr.add_argument("--prev-metadata", default=None, help="Previous render metadata for change detection")
 
@@ -247,6 +286,8 @@ def main() -> int:
 
     if args.command == "snapshot":
         return cmd_snapshot(args)
+    elif args.command == "compose":
+        return cmd_compose(args)
     elif args.command == "render":
         return cmd_render(args)
     else:

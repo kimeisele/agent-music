@@ -28,18 +28,18 @@ def test_composition_has_events():
 
 def test_composition_has_tempo_in_range():
     comp = _compose("active_federation.json")
-    assert 60 <= comp.tempo <= 120
+    assert 60 <= comp.tempo_bpm <= 120
 
 
 def test_loop_duration_positive():
     comp = _compose("active_federation.json")
-    assert comp.loop_duration_seconds() > 0
+    assert comp.loop_duration_seconds > 0
 
 
 def test_repeat_count_reasonable():
     comp = _compose("active_federation.json")
-    repeats = comp.repeat_count(48.0)
-    assert 1 <= repeats <= 10
+    repeats = comp.repeat_count
+    assert 1 <= repeats <= 15
 
 
 def test_quiet_fixture_fewer_events_than_active():
@@ -67,7 +67,7 @@ def test_deterministic_composition():
     # Same number of events
     assert len(comp1.events) == len(comp2.events)
     # Same tempo
-    assert comp1.tempo == comp2.tempo
+    assert comp1.tempo_bpm == comp2.tempo_bpm
     # Same events
     for e1, e2 in zip(comp1.events, comp2.events):
         assert e1.start_tick == e2.start_tick

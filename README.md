@@ -24,13 +24,19 @@ Every hour, `agent-music` **discovers federation nodes dynamically** via the Git
 | Communicating ratio | Rhythmic density |
 | Silent nodes | Musical space / rests |
 
-## Listen
+## One composition, three views
 
-The canonical render is always available at:
+One federation state produces one canonical composition. Three synchronized artifacts:
 
-**[`https://raw.githubusercontent.com/kimeisele/agent-music/render/federation.wav`](https://raw.githubusercontent.com/kimeisele/agent-music/render/federation.wav)**
+| Artifact | Description |
+|---|---|
+| [`composition.json`](https://raw.githubusercontent.com/kimeisele/agent-music/render/composition.json) | Machine-readable composition — every event, voice, and provenance |
+| [`federation.svg`](https://raw.githubusercontent.com/kimeisele/agent-music/render/federation.svg) | Visual score — temporal structure, voices, flows |
+| [`federation.wav`](https://raw.githubusercontent.com/kimeisele/agent-music/render/federation.wav) | Audible render — deterministic synthesis from the same composition |
 
-Each successful render replaces the previous one. There is exactly one current audio file.
+Federation Map visualizes spatial topology. Agent Music's SVG visualizes temporal composition. All three artifacts derive from one persisted `composition.json`.
+
+Each successful render replaces the previous set. No history accumulates.
 
 ## Musical system
 
@@ -52,16 +58,16 @@ python -m agent_music.cli snapshot \
   --output snapshot.json \
   --metadata-output snapshot-meta.json
 
-# Render a snapshot to WAV
-python -m agent_music.cli render \
+# Compose the snapshot into a canonical composition
+python -m agent_music.cli compose \
   --input snapshot.json \
-  --output federation.wav \
-  --metadata-output render.json
+  --output composition.json
 
-# Offline: render directly from a fixture
+# Render WAV and SVG from the composition
 python -m agent_music.cli render \
-  --input tests/fixtures/active_federation.json \
-  --output federation.wav \
+  --input composition.json \
+  --wav-output federation.wav \
+  --svg-output federation.svg \
   --metadata-output render.json
 
 # Run tests

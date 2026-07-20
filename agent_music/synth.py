@@ -91,10 +91,10 @@ def synth(composition: Composition, params: SynthParams | None = None) -> list[f
     if params is None:
         params = SynthParams()
 
-    tempo = composition.tempo
+    tempo = composition.tempo_bpm
     # Seconds per 16th note
     sec_per_tick = 60.0 / tempo / GRID_DIV
-    loop_duration = composition.loop_duration_seconds()
+    loop_duration = composition.loop_duration_seconds
     total_samples = int(loop_duration * SAMPLE_RATE)
 
     if total_samples <= 0:
