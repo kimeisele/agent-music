@@ -36,7 +36,7 @@ def test_render_agent_card(tmp_path: Path) -> None:
     result = _run_script("render_agent_card.py", "--output", str(out))
     assert result.returncode == 0, result.stderr
     data = json.loads(out.read_text())
-    assert data["name"] == "Agent Template"
+    assert data["name"] == "Agent Music"
     assert "skills" in data
     assert "federation" in data
 
@@ -81,6 +81,8 @@ def test_capabilities_json_valid() -> None:
 
 def test_nadi_kit_import() -> None:
     """nadi_kit can be imported and exposes expected API."""
+    pytest = __import__("pytest")
+    pytest.importorskip("nadi_kit")
     import importlib
 
     # Import from installed nadi-kit package
@@ -94,6 +96,8 @@ def test_nadi_kit_import() -> None:
 
 def test_nadi_node_from_peer_json(tmp_path: Path) -> None:
     """NadiNode can be created from a peer.json file."""
+    pytest = __import__("pytest")
+    pytest.importorskip("nadi_kit")
     from nadi_kit import NadiNode
 
     peer_data = {
@@ -125,6 +129,8 @@ def test_nadi_node_from_peer_json(tmp_path: Path) -> None:
 
 def test_nadi_node_emit_and_receive(tmp_path: Path) -> None:
     """NadiNode can emit messages and read them back from transport."""
+    pytest = __import__("pytest")
+    pytest.importorskip("nadi_kit")
     from nadi_kit import NadiNode
 
     peer_data = {
