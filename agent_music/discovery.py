@@ -8,10 +8,9 @@ the collection stage.
 Key design decisions (verified against federation-map):
 - Query: ``topic:agent-federation-node`` (same as discover_federation_peers.py:24)
 - Endpoint: ``https://api.github.com/search/repositories`` (same, line 25)
-- Pagination: implemented (gap in federation-map's discover() which only
-  fetches one page)
+- Pagination: all-or-nothing — any page failure fails the entire discovery
 - No org scope by default (federation-map's --org is opt-in, not protocol)
-- Uses ``default_branch`` from repo metadata instead of assuming ``main``
+- Uses ``default_branch`` from repo metadata (no ``main`` fallback)
 """
 
 from __future__ import annotations
@@ -19,21 +18,42 @@ from __future__ import annotations
 import json
 import os
 import sys
-import time
 import urllib.request
 import urllib.error
 from dataclasses import dataclass, field
 from typing import Any
 
-# ── Protocol constants (verified against federation-map) ────────────────────
+# ── Protocol constants ──────────────────────────────────────────────────────
 
 FEDERATION_TOPIC = "agent-federation-node"
 SEARCH_API = "https://api.github.com/search/repositories"
-PER_PAGE = 100          # GitHub max
-MAX_PAGES = 10          # safety bound: 10 × 100 = 1000 candidates
-HTTP_TIMEOUT = 15       # seconds
-MAX_RESPONSE_BYTES = 10 * 1024 * 1024  # 10 MiB safety bound
 _USER_AGENT = "agent-music/0.1 (observer node)"
+
+
+@dataclass(frozen=True)
+class DiscoveryConfig:
+    """Behaviour-only configuration for topic discovery.
+
+    ``topic`` is a protocol constant (not casually configurable).
+    Runtime values for timeouts and page limits come from
+    ``config/federation.json``.
+    """
+    topic: str = FEDERATION_TOPIC
+    per_page: int = 100
+    max_pages: int = 10
+    http_timeout_seconds: float = 15.0
+    max_response_bytes: int = 10 * 1024 * 1024  # 10 MiB
+
+    def __post_init__(self) -> None:
+        if self.per_page < 1 or self.per_page > 100:
+            raise ValueError(f"per_page must be 1-100, got {self.per_page}")
+        if self.max_pages < 1 or self.max_pages > 30:
+            raise ValueError(f"max_pages must be 1-30, got {self.max_pages}")
+        if self.http_timeout_seconds < 1 or self.http_timeout_seconds > 120:
+            raise ValueError(f"http_timeout_seconds must be 1-120, got {self.http_timeout_seconds}")
+        if self.max_response_bytes < 1024:
+            raise ValueError(f"max_response_bytes must be >= 1024, got {self.max_response_bytes}")
+
 
 # ── Structured failure types ────────────────────────────────────────────────
 
@@ -81,17 +101,21 @@ class RepositoryCandidate:
 # ── HTTP fetch with structured errors ───────────────────────────────────────
 
 
-def _get_token() -> str | None:
-    return os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
-
-
-def fetch_json(url: str) -> FetchResult:
+def fetch_json(
+    url: str,
+    config: DiscoveryConfig | None = None,
+) -> FetchResult:
     """Fetch and parse JSON from *url* with structured error reporting.
 
     Distinguishes: timeout, DNS/connection failure, HTTP error codes,
     rate-limit exhaustion, invalid JSON, and wrong payload type.
     """
-    token = _get_token()
+    if config is None:
+        cfg = DiscoveryConfig()
+    else:
+        cfg = config
+
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     headers: dict[str, str] = {
         "User-Agent": _USER_AGENT,
         "Accept": "application/vnd.github+json",
@@ -102,16 +126,18 @@ def fetch_json(url: str) -> FetchResult:
     req = urllib.request.Request(url, headers=headers)
 
     try:
-        with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT) as resp:
-            # Check rate-limit headers
+        with urllib.request.urlopen(req, timeout=cfg.http_timeout_seconds) as resp:
             remaining = resp.headers.get("X-RateLimit-Remaining")
             if remaining is not None and int(remaining) == 0:
                 retry = resp.headers.get("X-RateLimit-Reset", "unknown")
                 return FetchResult.err("rate_limited", f"reset at {retry}")
 
-            raw = resp.read(MAX_RESPONSE_BYTES)
-            if len(raw) >= MAX_RESPONSE_BYTES:
-                return FetchResult.err("too_large", f"response exceeded {MAX_RESPONSE_BYTES} bytes")
+            raw = resp.read(cfg.max_response_bytes + 1)
+            if len(raw) > cfg.max_response_bytes:
+                return FetchResult.err(
+                    "too_large",
+                    f"response exceeded {cfg.max_response_bytes} bytes",
+                )
 
             try:
                 data = json.loads(raw)
@@ -125,9 +151,7 @@ def fetch_json(url: str) -> FetchResult:
 
     except urllib.error.HTTPError as e:
         if e.code == 403:
-            remaining = e.headers.get("X-RateLimit-Remaining", "?") if hasattr(e, "headers") else "?"
-            if remaining == "0":
-                return FetchResult.err("rate_limited", f"HTTP 403 rate limited", status_code=403)
+            return FetchResult.err("rate_limited", f"HTTP 403 rate limited", status_code=403)
         return FetchResult.err("http", f"HTTP {e.code}", status_code=e.code)
 
     except urllib.error.URLError as e:
@@ -143,107 +167,133 @@ def fetch_json(url: str) -> FetchResult:
 # ── Pagination helper ───────────────────────────────────────────────────────
 
 
-def _parse_link_header(link_str: str) -> dict[str, str]:
-    """Parse GitHub's Link header into a dict of {rel: url}."""
-    links: dict[str, str] = {}
-    for part in link_str.split(","):
-        part = part.strip()
-        url_start = part.find("<")
-        url_end = part.find(">")
-        rel_start = part.find('rel="')
-        if url_start >= 0 and url_end > url_start and rel_start >= 0:
-            url = part[url_start + 1:url_end]
-            rel_end = part.find('"', rel_start + 5)
-            rel = part[rel_start + 5:rel_end] if rel_end > rel_start else ""
-            links[rel] = url
-    return links
-
-
-def _build_search_url(query: str, page: int, per_page: int = PER_PAGE) -> str:
-    """Build a GitHub search API URL with encoded query parameters."""
+def _build_search_url(query: str, page: int, per_page: int) -> str:
     from urllib.parse import urlencode
     params = urlencode({"q": query, "per_page": per_page, "page": page})
     return f"{SEARCH_API}?{params}"
+
+
+# ── Candidate validation ────────────────────────────────────────────────────
+
+
+def _validate_search_response(data: dict) -> FetchError | None:
+    """Validate first-level GitHub search API response structure."""
+    items = data.get("items")
+    if not isinstance(items, list):
+        return FetchError(category="wrong_type", message="'items' is not a list in search response")
+    return None
+
+
+def _validate_candidate_entry(repo: dict) -> str:  # returns rejection reason or ""
+    """Validate a single candidate repository entry. Returns empty string if valid."""
+    full_name = repo.get("full_name")
+    if not isinstance(full_name, str) or not full_name or "/" not in full_name:
+        return "invalid_full_name"
+
+    default_branch = repo.get("default_branch")
+    if not isinstance(default_branch, str) or not default_branch:
+        return "invalid_default_branch"
+
+    archived = repo.get("archived")
+    if not isinstance(archived, bool):
+        return "invalid_archived_field"
+
+    fork_val = repo.get("fork")
+    if not isinstance(fork_val, bool):
+        return "invalid_fork_field"
+
+    return ""
 
 
 # ── Topic discovery ─────────────────────────────────────────────────────────
 
 
 def discover_candidate_repositories(
-    topic: str = FEDERATION_TOPIC,
-    token: str | None = None,
+    config: DiscoveryConfig | None = None,
 ) -> tuple[list[RepositoryCandidate], list[FetchError]]:
     """Discover federation node candidates via GitHub topic search.
 
-    Returns (candidates, errors).  Errors are per-page fetch failures that
-    did not abort the entire discovery (e.g. one page timed out but others
-    succeeded).  If no pages could be fetched, candidates will be empty and
-    errors will contain the root cause.
+    Discovery is **atomic**: if any required pagination page fails,
+    the entire discovery fails and no partial candidate set is returned.
 
-    Paginates through all available results up to ``MAX_PAGES``.
-    Results are deterministically ordered by full_name after collection.
-    Archived repos are excluded (federation-map does not explicitly handle
-    them, but they cannot publish live descriptors).
+    Candidates are sorted deterministically by full_name after all pages
+    are collected.  Archived repos and repos with missing/invalid
+    ``default_branch`` are rejected.
     """
+    if config is None:
+        config = DiscoveryConfig()
+
     all_candidates: list[dict] = []
     page_errors: list[FetchError] = []
     seen: set[str] = set()
-    total_count: int | None = None
 
-    for page in range(1, MAX_PAGES + 1):
-        url = _build_search_url(f"topic:{topic}", page)
-        result = fetch_json(url)
+    for page in range(1, config.max_pages + 1):
+        url = _build_search_url(f"topic:{config.topic}", page, config.per_page)
+        result = fetch_json(url, config)
 
         if not result.ok:
-            page_errors.append(result.error)  # type: ignore[arg-type]
-            if page == 1:
-                # First page failed entirely — cannot continue
-                return [], page_errors
-            # Subsequent page failure — keep what we have
-            print(f"discovery: page {page} failed ({result.error.category}), "
-                  f"continuing with {len(all_candidates)} candidates", file=sys.stderr)
-            break
+            assert result.error is not None
+            page_errors.append(result.error)
+            # Atomic: any page failure → entire discovery fails
+            return [], page_errors
 
         data = result.data
-        assert isinstance(data, dict)
+        if not isinstance(data, dict):
+            return [], [FetchError(category="wrong_type", message="search response is not a dict")]
 
-        if total_count is None:
-            total_count = data.get("total_count", 0)
-            if total_count == 0:
-                return [], []
+        # Validate search response structure
+        resp_err = _validate_search_response(data)
+        if resp_err is not None:
+            return [], [resp_err]
 
         items = data.get("items", [])
         if not isinstance(items, list):
-            page_errors.append(FetchError(category="wrong_type", message="items is not a list"))
+            return [], [FetchError(category="wrong_type", message="items is not a list")]
+
+        # Exit early on empty
+        if len(items) == 0:
             break
 
+        # Validate and filter candidates
+        rejection_counts: dict[str, int] = {}
         for repo in items:
             if not isinstance(repo, dict):
                 continue
-            full_name = repo.get("full_name", "")
-            if not full_name or full_name in seen:
+            reject_reason = _validate_candidate_entry(repo)
+            if reject_reason:
+                rejection_counts[reject_reason] = rejection_counts.get(reject_reason, 0) + 1
                 continue
-            if repo.get("archived", False):
+
+            full_name = repo["full_name"]
+            if full_name in seen:
+                continue
+            if repo["archived"]:
                 continue
             seen.add(full_name)
             all_candidates.append(repo)
 
-        # Check for more pages via Link header
-        # (we can't access response headers from fetch_json — use item count)
-        if len(items) < PER_PAGE:
-            break  # partial page = last page
+        # Log page-level stats
+        if rejection_counts:
+            cats = ", ".join(f"{k}:{v}" for k, v in sorted(rejection_counts.items()))
+            print(f"discovery: page {page} — {len(items)} raw, "
+                  f"{len(items) - sum(rejection_counts.values())} valid, "
+                  f"rejected: {cats}", file=sys.stderr)
 
-    # Sort deterministically by full_name
+        # Partial page = last page
+        if len(items) < config.per_page:
+            break
+
+    # Deterministic ordering
     all_candidates.sort(key=lambda r: r.get("full_name", ""))
 
-    # Truncate to total_count safety bound
-    if len(all_candidates) > MAX_PAGES * PER_PAGE:
-        all_candidates = all_candidates[:MAX_PAGES * PER_PAGE]
+    # Truncate to safety bound
+    if len(all_candidates) > config.max_pages * config.per_page:
+        all_candidates = all_candidates[:config.max_pages * config.per_page]
 
     candidates = [
         RepositoryCandidate(
             full_name=r["full_name"],
-            default_branch=r.get("default_branch", "main"),
+            default_branch=r["default_branch"],
             html_url=r.get("html_url", ""),
             description=r.get("description") or "",
             is_archived=r.get("archived", False),

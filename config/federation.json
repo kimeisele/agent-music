@@ -1,9 +1,9 @@
 {
   "discovery": {
-    "topic": "agent-federation-node",
-    "http_timeout_seconds": 15,
     "per_page": 100,
-    "max_pages": 10
+    "max_pages": 10,
+    "http_timeout_seconds": 15,
+    "max_response_bytes": 10485760
   },
   "collection": {
     "default_outbox_path": "data/federation/nadi_outbox.json"

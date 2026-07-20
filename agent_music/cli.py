@@ -17,6 +17,7 @@ import time
 from pathlib import Path
 
 from .collect import collect_federation_state, CollectionResult
+from .discovery import DiscoveryConfig
 from .normalize import NormalizedSnapshot
 from .compose import compose
 from .synth import synth, samples_to_pcm, SAMPLE_RATE
@@ -24,6 +25,23 @@ from .wav import write_wav, validate_wav
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = REPO_ROOT / "config" / "federation.json"
+
+
+def _load_discovery_config(config_path: str | None) -> DiscoveryConfig:
+    """Load discovery configuration from JSON, validating ranges."""
+    if config_path is None:
+        config_path = str(DEFAULT_CONFIG)
+    cfg = Path(config_path)
+    if cfg.exists():
+        data = json.loads(cfg.read_text())
+        disc = data.get("discovery", {})
+        return DiscoveryConfig(
+            per_page=int(disc.get("per_page", 100)),
+            max_pages=int(disc.get("max_pages", 10)),
+            http_timeout_seconds=float(disc.get("http_timeout_seconds", 15)),
+            max_response_bytes=int(disc.get("max_response_bytes", 10 * 1024 * 1024)),
+        )
+    return DiscoveryConfig()
 
 
 def _load_outbox_path(config_path: str | None) -> str:
@@ -39,10 +57,14 @@ def _load_outbox_path(config_path: str | None) -> str:
 
 def cmd_snapshot(args: argparse.Namespace) -> int:
     """Discover, validate, collect, normalize → write snapshot + metadata."""
+    discovery_config = _load_discovery_config(args.config)
     outbox_path = _load_outbox_path(args.config)
 
     print("Discovering federation nodes via topic search...", file=sys.stderr)
-    result = collect_federation_state(outbox_path=outbox_path)
+    result = collect_federation_state(
+        outbox_path=outbox_path,
+        discovery_config=discovery_config,
+    )
 
     if not result.has_authoritative_state:
         print("ERROR: No authoritative federation state collected.", file=sys.stderr)
@@ -50,21 +72,19 @@ def cmd_snapshot(args: argparse.Namespace) -> int:
 
     topology = result.to_topology()
     snapshot = NormalizedSnapshot.from_topology(topology)
+    snapshot.observed_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     semantic_hash = snapshot.semantic_hash()
-    observed_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
-    # Write snapshot
-    snapshot_data = json.loads(snapshot.semantic_bytes())
-    snapshot_data["observed_at"] = observed_at
+    # Write serialized NormalizedSnapshot (not raw topology)
     snapshot_out = Path(args.output)
     snapshot_out.parent.mkdir(parents=True, exist_ok=True)
-    snapshot_out.write_text(json.dumps(snapshot_data, indent=2, sort_keys=True) + "\n")
+    snapshot_out.write_bytes(snapshot.to_json_bytes())
 
     # Write metadata
     meta = {
         "schema_version": 1,
         "semantic_snapshot_sha256": semantic_hash,
-        "observed_at": observed_at,
+        "observed_at": snapshot.observed_at,
         "candidates_discovered": result.accepted + result.rejected,
         "nodes_accepted": result.accepted,
         "nodes_rejected": result.rejected,
@@ -92,8 +112,14 @@ def cmd_render(args: argparse.Namespace) -> int:
         print(f"ERROR: Snapshot not found: {args.input}", file=sys.stderr)
         return 1
 
-    topology = json.loads(snapshot_path.read_text())
-    snapshot = NormalizedSnapshot.from_topology(topology)
+    # Deserialize NormalizedSnapshot (NOT raw topology)
+    try:
+        data = json.loads(snapshot_path.read_bytes())
+        snapshot = NormalizedSnapshot.from_dict(data)
+    except (json.JSONDecodeError, ValueError) as e:
+        print(f"ERROR: Invalid snapshot: {e}", file=sys.stderr)
+        return 1
+
     semantic_hash = snapshot.semantic_hash()
 
     # ── Change detection: check previous hash BEFORE synthesis ────────

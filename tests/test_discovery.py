@@ -101,7 +101,7 @@ class TestDiscovery:
 
         call_count = [0]
 
-        def mock_fetch(url):
+        def mock_fetch(url, config=None):
             call_count[0] += 1
             if call_count[0] == 1:
                 return FetchResult.ok_result(page1)
@@ -154,7 +154,7 @@ class TestDiscovery:
 
         call_count = [0]
 
-        def mock_fetch(url):
+        def mock_fetch(url, config=None):
             call_count[0] += 1
             if call_count[0] == 1:
                 return FetchResult.ok_result(page1)
@@ -196,7 +196,7 @@ class TestDiscovery:
 
         call_count = [0]
 
-        def mock_fetch(url):
+        def mock_fetch(url, config=None):
             call_count[0] += 1
             return FetchResult.ok_result(
                 _make_search_response(repos_per_page, 1100)
@@ -365,3 +365,147 @@ class TestCollectionOrchestration:
         assert isinstance(result, CollectionResult)
         assert not result.has_authoritative_state
         assert result.rejected == 1
+
+
+# ── Atomic pagination tests ─────────────────────────────────────────────────
+
+
+class TestAtomicPagination:
+    def test_page2_timeout_fails_discovery(self):
+        """Page 1 succeeds, page 2 times out → entire discovery fails."""
+        page1 = _make_search_response(
+            [_make_repo(f"kimeisele/node-{i}") for i in range(100)], 200
+        )
+
+        call_count = [0]
+
+        def mock_fetch(url, config=None):
+            call_count[0] += 1
+            if call_count[0] == 1:
+                return FetchResult.ok_result(page1)
+            else:
+                return FetchResult.err("timeout", "page 2 timed out")
+
+        with patch("agent_music.discovery.fetch_json", side_effect=mock_fetch):
+            candidates, errors = discover_candidate_repositories()
+
+        assert len(candidates) == 0  # atomic: fail entirely
+        assert len(errors) > 0
+        assert errors[0].category == "timeout"
+
+    def test_page2_rate_limited_fails_discovery(self):
+        """Page 1 succeeds, page 2 rate-limited → entire discovery fails."""
+        page1 = _make_search_response(
+            [_make_repo(f"kimeisele/node-{i}") for i in range(100)], 200
+        )
+
+        call_count = [0]
+
+        def mock_fetch(url, config=None):
+            call_count[0] += 1
+            if call_count[0] == 1:
+                return FetchResult.ok_result(page1)
+            else:
+                return FetchResult.err("rate_limited", "rate limited")
+
+        with patch("agent_music.discovery.fetch_json", side_effect=mock_fetch):
+            candidates, errors = discover_candidate_repositories()
+
+        assert len(candidates) == 0
+        assert len(errors) > 0
+
+
+# ── Default-branch rejection tests ──────────────────────────────────────────
+
+
+class TestDefaultBranchRejection:
+    def test_missing_default_branch_rejected(self):
+        repo = {
+            "full_name": "kimeisele/no-branch",
+            "html_url": "https://github.com/kimeisele/no-branch",
+            "description": "",
+            "archived": False,
+            "fork": False,
+            "topics": ["agent-federation-node"],
+            "stargazers_count": 1,
+            # NO default_branch field
+        }
+        with patch("agent_music.discovery.fetch_json") as mock_fetch:
+            mock_fetch.return_value = FetchResult.ok_result(
+                _make_search_response([repo], 1)
+            )
+            candidates, errors = discover_candidate_repositories()
+
+        assert len(candidates) == 0  # rejected
+
+    def test_empty_default_branch_rejected(self):
+        repo = _make_repo("kimeisele/empty-branch")
+        repo["default_branch"] = ""  # empty string
+        with patch("agent_music.discovery.fetch_json") as mock_fetch:
+            mock_fetch.return_value = FetchResult.ok_result(
+                _make_search_response([repo], 1)
+            )
+            candidates, errors = discover_candidate_repositories()
+
+        assert len(candidates) == 0
+
+
+# ── Response-size boundary tests ────────────────────────────────────────────
+
+
+class TestResponseSizeBoundary:
+    def test_exact_max_ok(self):
+        from agent_music.discovery import DiscoveryConfig
+        config = DiscoveryConfig(max_response_bytes=1024)
+
+        with patch("urllib.request.urlopen") as mock_urlopen:
+            mock_resp = MagicMock()
+            mock_resp.headers = {}
+            # Exactly 1024 bytes — must be accepted
+            mock_resp.read.return_value = b'{"k":"' + b'x' * 1016 + b'"}'
+            mock_resp.__enter__.return_value = mock_resp
+            mock_urlopen.return_value = mock_resp
+
+            result = fetch_json("https://example.com", config)
+            assert result.ok
+
+    def test_max_plus_one_rejected(self):
+        from agent_music.discovery import DiscoveryConfig
+        config = DiscoveryConfig(max_response_bytes=1024)
+
+        with patch("urllib.request.urlopen") as mock_urlopen:
+            mock_resp = MagicMock()
+            mock_resp.headers = {}
+            # 1025 bytes > 1024 max — must be rejected
+            mock_resp.read.return_value = b'{"k":"' + b'x' * 1017 + b'"}'
+            mock_resp.__enter__.return_value = mock_resp
+            mock_urlopen.return_value = mock_resp
+
+            result = fetch_json("https://example.com", config)
+            assert not result.ok
+            assert result.error.category == "too_large"
+
+
+# ── Config validation tests ─────────────────────────────────────────────────
+
+
+class TestConfigValidation:
+    def test_valid_config(self):
+        from agent_music.discovery import DiscoveryConfig
+        cfg = DiscoveryConfig(per_page=50, max_pages=5)
+        assert cfg.per_page == 50
+        assert cfg.max_pages == 5
+
+    def test_invalid_per_page_raises(self):
+        from agent_music.discovery import DiscoveryConfig
+        with pytest.raises(ValueError):
+            DiscoveryConfig(per_page=0)
+        with pytest.raises(ValueError):
+            DiscoveryConfig(per_page=101)
+
+    def test_invalid_max_pages_raises(self):
+        from agent_music.discovery import DiscoveryConfig
+        with pytest.raises(ValueError):
+            DiscoveryConfig(max_pages=0)
+        with pytest.raises(ValueError):
+            DiscoveryConfig(max_pages=31)

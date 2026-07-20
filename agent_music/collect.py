@@ -21,6 +21,7 @@ from .discovery import (
     FetchError,
     fetch_json,
     discover_candidate_repositories,
+    DiscoveryConfig,
     FEDERATION_TOPIC,
 )
 
@@ -315,18 +316,18 @@ def collect_node_state(
 
 def collect_federation_state(
     outbox_path: str = DEFAULT_OUTBOX_PATH,
+    discovery_config: DiscoveryConfig | None = None,
 ) -> CollectionResult:
     """Full pipeline: discover → validate → collect.
 
-    Returns a CollectionResult with all successful nodes, flow data,
-    and rejection statistics.  Individual failures never abort the
-    entire collection as long as at least one valid node remains.
+    Discovery is atomic — any page failure aborts the entire collection.
+    Individual node validation failures do not abort (valid subset is used).
     """
     ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
     # ── Discover ────────────────────────────────────────────────────
-    candidates, discovery_errors = discover_candidate_repositories()
-    if discovery_errors and not candidates:
+    candidates, discovery_errors = discover_candidate_repositories(discovery_config)
+    if not candidates:
         print(f"discovery: FAILED — {len(discovery_errors)} error(s)", file=sys.stderr)
         for e in discovery_errors[:3]:
             print(f"  {e.category}: {e.message[:100]}", file=sys.stderr)
