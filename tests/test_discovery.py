@@ -190,23 +190,21 @@ class TestDiscovery:
         assert len(candidates) == 0
         assert len(errors) > 0
 
-    def test_max_page_bound(self):
-        # Create 11 pages × 100 repos = 1100, but max_pages=10
+    def test_max_page_bound_fails_on_full_pages(self):
+        """When every page through max_pages is full, discovery fails with pagination_limit."""
         repos_per_page = [_make_repo(f"kimeisele/node-{i}") for i in range(100)]
 
-        call_count = [0]
-
         def mock_fetch(url, config=None):
-            call_count[0] += 1
             return FetchResult.ok_result(
                 _make_search_response(repos_per_page, 1100)
             )
 
         with patch("agent_music.discovery.fetch_json", side_effect=mock_fetch):
-            candidates, _ = discover_candidate_repositories()
+            candidates, errors = discover_candidate_repositories()
 
-        # Should stop at MAX_PAGES (10) despite all pages returning full results
-        assert len(candidates) <= 10 * 100
+        assert len(candidates) == 0
+        assert len(errors) == 1
+        assert errors[0].category == "pagination_limit"
 
     def test_http_403(self):
         with patch("agent_music.discovery.fetch_json") as mock_fetch:
@@ -413,6 +411,116 @@ class TestAtomicPagination:
 
         assert len(candidates) == 0
         assert len(errors) > 0
+
+
+# ── Pagination-limit completeness tests ─────────────────────────────────────
+
+
+class TestPaginationLimit:
+    def test_partial_final_page_succeeds(self):
+        """Final allowed page is partial → discovery is conclusive (page 3 of 3 is partial)."""
+        def make_page(start, count):
+            return _make_search_response(
+                [_make_repo(f"kimeisele/node-{i}") for i in range(start, start + count)],
+                250,
+            )
+
+        page = [0]
+
+        def mock_fetch(url, config=None):
+            page[0] += 1
+            if page[0] == 1:
+                return FetchResult.ok_result(make_page(0, 100))
+            elif page[0] == 2:
+                return FetchResult.ok_result(make_page(100, 100))
+            else:
+                return FetchResult.ok_result(make_page(200, 50))  # partial
+
+        from agent_music.discovery import DiscoveryConfig
+        cfg = DiscoveryConfig(max_pages=3)
+        with patch("agent_music.discovery.fetch_json", side_effect=mock_fetch):
+            candidates, errors = discover_candidate_repositories(cfg)
+
+        assert len(candidates) == 250  # 100 + 100 + 50
+        assert len(errors) == 0
+
+    def test_empty_final_page_succeeds(self):
+        """Final allowed page is empty → discovery is conclusive."""
+        def make_page(start, count):
+            return _make_search_response(
+                [_make_repo(f"kimeisele/node-{i}") for i in range(start, start + count)],
+                600,
+            )
+
+        page = [0]
+
+        def mock_fetch(url, config=None):
+            page[0] += 1
+            if page[0] <= 5:
+                return FetchResult.ok_result(make_page((page[0] - 1) * 100, 100))
+            else:
+                return FetchResult.ok_result(_make_search_response([], 600))  # empty
+
+        from agent_music.discovery import DiscoveryConfig
+        cfg = DiscoveryConfig(max_pages=10)
+        with patch("agent_music.discovery.fetch_json", side_effect=mock_fetch):
+            candidates, errors = discover_candidate_repositories(cfg)
+
+        assert len(candidates) == 500  # 5 pages × 100 unique = 500
+        assert len(errors) == 0
+
+    def test_all_pages_full_fails(self):
+        """Every page through max_pages is full → discovery fails with pagination_limit."""
+        full_page = _make_search_response(
+            [_make_repo(f"kimeisele/node-{i}") for i in range(100)], 2000
+        )
+
+        def mock_fetch(url, config=None):
+            return FetchResult.ok_result(full_page)
+
+        from agent_music.discovery import DiscoveryConfig
+        cfg = DiscoveryConfig(max_pages=3)
+        with patch("agent_music.discovery.fetch_json", side_effect=mock_fetch):
+            candidates, errors = discover_candidate_repositories(cfg)
+
+        assert len(candidates) == 0
+        assert len(errors) == 1
+        assert errors[0].category == "pagination_limit"
+
+    def test_pagination_limit_zero_candidates(self):
+        """Pagination-limit failure returns exactly zero candidates."""
+        full_page = _make_search_response(
+            [_make_repo(f"kimeisele/node-{i}") for i in range(100)], 2000
+        )
+
+        def mock_fetch(url, config=None):
+            return FetchResult.ok_result(full_page)
+
+        from agent_music.discovery import DiscoveryConfig
+        cfg = DiscoveryConfig(max_pages=3)
+        with patch("agent_music.discovery.fetch_json", side_effect=mock_fetch):
+            candidates, errors = discover_candidate_repositories(cfg)
+        assert len(candidates) == 0
+        assert len(errors) == 1
+        assert errors[0].category == "pagination_limit"
+
+    def test_pagination_limit_reaches_collection_as_failure(self):
+        """Pagination-limit failure propagates through collect_federation_state."""
+        full_page = _make_search_response(
+            [_make_repo(f"kimeisele/node-{i}") for i in range(100)], 2000
+        )
+
+        def mock_fetch(url, config=None):
+            return FetchResult.ok_result(full_page)
+
+        from agent_music.discovery import DiscoveryConfig
+        cfg = DiscoveryConfig(max_pages=3)
+
+        with patch("agent_music.discovery.fetch_json", side_effect=mock_fetch):
+            result = collect_federation_state(discovery_config=cfg)
+
+        assert isinstance(result, CollectionResult)
+        assert not result.has_authoritative_state
 
 
 # ── Default-branch rejection tests ──────────────────────────────────────────

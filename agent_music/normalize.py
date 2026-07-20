@@ -171,6 +171,10 @@ class NormalizedSnapshot:
                 activity=_require_int(n, "activity", min_val=0),
             ))
 
+        # Canonical ordering — two snapshots that differ only in node
+        # array order must produce the same semantic hash.
+        nodes.sort(key=lambda n: (n.full_name, n.id_))
+
         # Validate flows
         raw_flows = _require_list_of_dicts(data, "flows")
         flows: list[FlowInfo] = []
@@ -254,6 +258,8 @@ class NormalizedSnapshot:
                 feed_available=n.get("has_authority_feed", False),
                 activity=max(0, n.get("depth", 0)),
             ))
+        # Canonical ordering — must match from_dict sort key
+        nodes.sort(key=lambda n: (n.full_name, n.id_))
 
         flows: list[FlowInfo] = []
         for key, weight in raw_flows.items():

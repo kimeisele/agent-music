@@ -226,6 +226,7 @@ def discover_candidate_repositories(
     all_candidates: list[dict] = []
     page_errors: list[FetchError] = []
     seen: set[str] = set()
+    conclusive: bool = False
 
     for page in range(1, config.max_pages + 1):
         url = _build_search_url(f"topic:{config.topic}", page, config.per_page)
@@ -234,14 +235,12 @@ def discover_candidate_repositories(
         if not result.ok:
             assert result.error is not None
             page_errors.append(result.error)
-            # Atomic: any page failure → entire discovery fails
             return [], page_errors
 
         data = result.data
         if not isinstance(data, dict):
             return [], [FetchError(category="wrong_type", message="search response is not a dict")]
 
-        # Validate search response structure
         resp_err = _validate_search_response(data)
         if resp_err is not None:
             return [], [resp_err]
@@ -249,10 +248,6 @@ def discover_candidate_repositories(
         items = data.get("items", [])
         if not isinstance(items, list):
             return [], [FetchError(category="wrong_type", message="items is not a list")]
-
-        # Exit early on empty
-        if len(items) == 0:
-            break
 
         # Validate and filter candidates
         rejection_counts: dict[str, int] = {}
@@ -272,23 +267,28 @@ def discover_candidate_repositories(
             seen.add(full_name)
             all_candidates.append(repo)
 
-        # Log page-level stats
         if rejection_counts:
             cats = ", ".join(f"{k}:{v}" for k, v in sorted(rejection_counts.items()))
             print(f"discovery: page {page} — {len(items)} raw, "
                   f"{len(items) - sum(rejection_counts.values())} valid, "
                   f"rejected: {cats}", file=sys.stderr)
 
-        # Partial page = last page
+        # Conclusive termination: partial page, or empty page
         if len(items) < config.per_page:
+            conclusive = True
             break
+
+    # If every page through max_pages was full, discovery completeness
+    # cannot be proven — fail rather than return a truncated candidate set.
+    if not conclusive:
+        return [], [FetchError(
+            category="pagination_limit",
+            message=f"discovery incomplete: all {config.max_pages} pages were full "
+                    f"({config.max_pages * config.per_page}+ candidates may exist)",
+        )]
 
     # Deterministic ordering
     all_candidates.sort(key=lambda r: r.get("full_name", ""))
-
-    # Truncate to safety bound
-    if len(all_candidates) > config.max_pages * config.per_page:
-        all_candidates = all_candidates[:config.max_pages * config.per_page]
 
     candidates = [
         RepositoryCandidate(

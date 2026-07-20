@@ -44,10 +44,11 @@ def test_snapshot_from_partial_fixture():
 
 
 def test_nodes_sorted():
+    """Nodes are sorted by canonical identity (full_name, id_)."""
     topo = _load("active_federation.json")
     snap = NormalizedSnapshot.from_topology(topo)
-    ids = [n.id_ for n in snap.nodes]
-    assert ids == sorted(ids)
+    keys = [(n.full_name, n.id_) for n in snap.nodes]
+    assert keys == sorted(keys)
 
 
 def test_flows_sorted():

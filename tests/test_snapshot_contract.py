@@ -178,3 +178,56 @@ def test_cli_snapshot_to_render_e2e():
         meta2 = json.loads(open(Path(tmp) / "render2.json").read())
         assert meta2.get("state_changed") is False
         assert "skipping" in result2.stderr.lower() or "unchanged" in result2.stderr.lower()
+
+
+# ── Canonical node ordering tests ───────────────────────────────────────────
+
+
+def test_reordered_nodes_produce_same_order():
+    """Deserializing snapshots with different node array order produces
+    the same canonical order."""
+    topo = load_fixture("active_federation.json")
+    snap1 = NormalizedSnapshot.from_topology(topo)
+    data1 = snap1.to_dict()
+
+    # Reverse the node array
+    data2 = dict(data1)
+    data2["nodes"] = list(reversed(data1["nodes"]))
+
+    snap2 = NormalizedSnapshot.from_dict(data2)
+
+    ids1 = [(n.full_name, n.id_) for n in snap1.nodes]
+    ids2 = [(n.full_name, n.id_) for n in snap2.nodes]
+    assert ids1 == ids2
+
+
+def test_reordered_nodes_same_semantic_hash():
+    """Reordered node arrays produce identical semantic hashes."""
+    topo = load_fixture("active_federation.json")
+    snap = NormalizedSnapshot.from_topology(topo)
+    data = snap.to_dict()
+
+    # Shuffle nodes
+    import random
+    rng = random.Random(42)
+    nodes_shuffled = list(data["nodes"])
+    rng.shuffle(nodes_shuffled)
+    data["nodes"] = nodes_shuffled
+
+    snap2 = NormalizedSnapshot.from_dict(data)
+    assert snap.semantic_hash() == snap2.semantic_hash()
+
+
+def test_roundtrip_ordering_stable():
+    """Serialization/deserialization roundtrip keeps node ordering stable."""
+    topo = load_fixture("active_federation.json")
+    snap1 = NormalizedSnapshot.from_topology(topo)
+    data = snap1.to_dict()
+    snap2 = NormalizedSnapshot.from_dict(data)
+    data2 = snap2.to_dict()
+
+    # A second roundtrip should produce identical order
+    snap3 = NormalizedSnapshot.from_dict(data2)
+    ids2 = [(n.full_name, n.id_) for n in snap2.nodes]
+    ids3 = [(n.full_name, n.id_) for n in snap3.nodes]
+    assert ids2 == ids3
