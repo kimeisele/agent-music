@@ -1,1 +1,25 @@
-[]
+[
+  {
+    "source": "ag_95b639fd229e2254",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_95b639fd229e2254",
+      "agent_name": "agent-music",
+      "public_key": "a43e0c3e5834c26f90bd5ab4a82383eea3c8ba302324113d5c5920e62ea08814",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1784540101.4354045,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "53894ebf-61df-4c78-b9ad-e5f172e22b4c",
+    "payload_hash": "3373d5e2781395edd367c65cb09d7fd54126e06bcef631873bf28b75fe3127eb",
+    "signature": "4TdJAE42iGskn0m1QGdPb+GPBtvKu9llvhnaO2CJ9/jElHi2N0Tc9j2sDCpx8ifbN/pD/8/t+7Df5WM6FqalCw=="
+  }
+]
