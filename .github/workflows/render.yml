@@ -52,7 +52,28 @@ jobs:
             echo "No previous render found (first run)"
           fi
 
+      - name: Check for federation state changes
+        id: check
+        run: |
+          NEW_HASH=$(python -c "import json; print(json.load(open('snapshot-meta.json'))['semantic_snapshot_sha256'])")
+          echo "new_hash=$NEW_HASH" >> $GITHUB_OUTPUT
+          if [ -f prev_render.json ]; then
+            PREV_HASH=$(python -c "import json; print(json.load(open('prev_render.json'))['semantic_snapshot_sha256'])")
+            echo "prev_hash=$PREV_HASH" >> $GITHUB_OUTPUT
+            if [ "$NEW_HASH" = "$PREV_HASH" ]; then
+              echo "Federation state unchanged — stopping"
+              echo "state_changed=false" >> $GITHUB_OUTPUT
+            else
+              echo "Federation state changed — will compose and render"
+              echo "state_changed=true" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "First render — will compose and render"
+            echo "state_changed=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Compose — snapshot to canonical Composition
+        if: steps.check.outputs.state_changed == 'true'
         id: compose
         run: |
           python -m agent_music.cli compose \
@@ -60,36 +81,17 @@ jobs:
             --output composition.json
 
       - name: Render — WAV + SVG from persisted Composition
+        if: steps.check.outputs.state_changed == 'true'
         id: render
         run: |
-          if [ -f prev_render.json ]; then
-            python -m agent_music.cli render \
-              --input composition.json \
-              --wav-output federation.wav \
-              --svg-output federation.svg \
-              --metadata-output render.json \
-              --prev-metadata prev_render.json
-          else
-            python -m agent_music.cli render \
-              --input composition.json \
-              --wav-output federation.wav \
-              --svg-output federation.svg \
-              --metadata-output render.json
-          fi
-
-      - name: Check if render was produced
-        id: check
-        run: |
-          STATE_CHANGED=$(python -c "import json; print(json.load(open('render.json')).get('state_changed', True))")
-          echo "state_changed=$STATE_CHANGED" >> $GITHUB_OUTPUT
-          if [ "$STATE_CHANGED" = "True" ]; then
-            echo "New render produced"
-          else
-            echo "Federation state unchanged — no new render"
-          fi
+          python -m agent_music.cli render \
+            --input composition.json \
+            --wav-output federation.wav \
+            --svg-output federation.svg \
+            --metadata-output render.json
 
       - name: Publish to render branch
-        if: steps.check.outputs.state_changed == 'True'
+        if: steps.check.outputs.state_changed == 'true'
         run: |
           mkdir -p /tmp/render-out
           cp federation.wav federation.svg composition.json render.json /tmp/render-out/

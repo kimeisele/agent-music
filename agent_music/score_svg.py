@@ -8,7 +8,6 @@ from __future__ import annotations
 import hashlib
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from xml.sax.saxutils import escape as xml_escape
 
 from .compose import Composition, ROLE_ORDER
 
@@ -120,7 +119,7 @@ def render_svg(composition: Composition, output: Path) -> dict:
     # ── Voice lanes ───────────────────────────────────────────────────
     for v_idx, voice in enumerate(voices):
         y = HEADER_HEIGHT + v_idx * LANE_HEIGHT
-        lane_label = f"{xml_escape(voice.display_id)} ({voice.role}, {voice.waveform})"
+        lane_label = f"{voice.display_id} ({voice.role}, {voice.waveform})"
         ET.SubElement(svg, "text", {
             "class": "label",
             "x": str(LEFT_GUTTER - 8),
@@ -197,8 +196,18 @@ def render_svg(composition: Composition, output: Path) -> dict:
             continue
         call_x, call_y, call_vi = parts["flow_call"]
         resp_x, resp_y, resp_vi = parts["flow_response"]
-        # Only draw connector if on different lanes
-        if call_vi != resp_vi:
+
+        if call_vi == resp_vi:
+            # Self-connector: raised arc on same lane
+            mid_x = (call_x + resp_x) // 2
+            arc_y = call_y - 12
+            ET.SubElement(svg, "path", {
+                "class": "connector",
+                "data-flow-id": pid.split("-pair-")[0] if "-pair-" in pid else "",
+                "data-pair-id": pid,
+                "d": f"M{call_x},{call_y} Q{mid_x},{arc_y} {resp_x},{resp_y}",
+            })
+        else:
             ET.SubElement(svg, "line", {
                 "class": "connector",
                 "data-flow-id": pid.split("-pair-")[0] if "-pair-" in pid else "",
@@ -325,31 +334,18 @@ def validate_svg(path: Path, composition: Composition) -> dict:
     if missing:
         errors.append(f"missing event elements: {len(missing)}")
 
-    # Count connectors
-    connectors = tree.findall(".//{http://www.w3.org/2000/svg}line[@data-pair-id]")
+    # Count connectors — one per pair_id (including same-lane self-connectors)
+    line_connectors = tree.findall(".//{http://www.w3.org/2000/svg}line[@data-pair-id]")
+    path_connectors = tree.findall(".//{http://www.w3.org/2000/svg}path[@data-pair-id]")
+    all_connectors = line_connectors + path_connectors
     pair_ids = {
         e.provenance["pair_id"]
         for e in composition.events
         if e.provenance.get("pair_id")
     }
-    # Only pairs on different lanes get connectors
-    voice_index = {
-        v.voice_id: i
-        for i, v in enumerate(
-            sorted(composition.voices, key=lambda v: (ROLE_ORDER.get(v.role, 99), v.voice_id))
-        )
-    }
-    expected_connectors = 0
-    for pid in pair_ids:
-        pair_evts = [e for e in composition.events if e.provenance.get("pair_id") == pid]
-        if len(pair_evts) == 2:
-            vi0 = voice_index.get(pair_evts[0].voice_id)
-            vi1 = voice_index.get(pair_evts[1].voice_id)
-            if vi0 is not None and vi1 is not None and vi0 != vi1:
-                expected_connectors += 1
 
-    if len(connectors) != expected_connectors:
-        errors.append(f"connector count {len(connectors)} != expected {expected_connectors}")
+    if len(all_connectors) != len(pair_ids):
+        errors.append(f"connector count {len(all_connectors)} != pair count {len(pair_ids)}")
 
     valid = len(errors) == 0
     return {"valid": valid, "errors": errors, "svg_sha256": svg_sha256}

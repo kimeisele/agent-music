@@ -295,8 +295,13 @@ class Composition:
         repeat_count = _require_int_range(data, "repeat_count", 1, 100)
         render_dur = canonical_float(data.get("render_duration_seconds", 0.0))
 
-        # Validate derived fields
-        expected_loop = canonical_float((bars * beats_per_bar * 60.0) / (tempo * ticks_per_beat))
+        # Validate derived fields + total_ticks invariant
+        expected_ticks = bars * beats_per_bar * ticks_per_beat
+        if total_ticks != expected_ticks:
+            raise ValueError(
+                f"total_ticks {total_ticks} != bars*beats_per_bar*ticks_per_beat ({expected_ticks})"
+            )
+        expected_loop = canonical_float((bars * beats_per_bar) * 60.0 / tempo)
         if abs(loop_dur - expected_loop) > 1e-6:
             raise ValueError(
                 f"loop_duration_seconds {loop_dur} does not match "
@@ -342,9 +347,23 @@ class Composition:
                 if "node" not in prov:
                     raise ValueError(f"event {evt.event_id}: node_activity missing provenance.node")
             elif evt.event_type in ("flow_call", "flow_response"):
-                for k in ("flow_id", "pair_id", "source", "target"):
+                for k in ("flow_id", "pair_id", "source", "target", "flow_weight"):
                     if k not in prov:
                         raise ValueError(f"event {evt.event_id}: missing provenance.{k}")
+                fw = prov["flow_weight"]
+                if not isinstance(fw, int) or fw < 0:
+                    raise ValueError(
+                        f"event {evt.event_id}: flow_weight must be int >= 0, got {type(fw).__name__} {fw}"
+                    )
+                # Call voice must match source; response voice must match target
+                if evt.event_type == "flow_call" and evt.voice_id != prov["source"]:
+                    raise ValueError(
+                        f"event {evt.event_id}: flow_call voice {evt.voice_id} != source {prov['source']}"
+                    )
+                if evt.event_type == "flow_response" and evt.voice_id != prov["target"]:
+                    raise ValueError(
+                        f"event {evt.event_id}: flow_response voice {evt.voice_id} != target {prov['target']}"
+                    )
                 pair_id = prov["pair_id"]
                 pair_map.setdefault(pair_id, []).append(evt)
 
@@ -365,9 +384,32 @@ class Composition:
             types = {e.event_type for e in pair_events}
             if types != {"flow_call", "flow_response"}:
                 raise ValueError(f"pair_id {pair_id}: expected one flow_call + one flow_response, got {types}")
-            flow_ids = {e.provenance.get("flow_id") for e in pair_events}
-            if len(flow_ids) != 1:
-                raise ValueError(f"pair_id {pair_id}: inconsistent flow_id across pair")
+            # Consistency across pair
+            p0, p1 = pair_events[0], pair_events[1]
+            for field in ("flow_id", "source", "target", "flow_weight"):
+                if p0.provenance.get(field) != p1.provenance.get(field):
+                    raise ValueError(
+                        f"pair_id {pair_id}: mismatched {field}: "
+                        f"{p0.provenance.get(field)} vs {p1.provenance.get(field)}"
+                    )
+
+        # Canonicalize: sort voices and events by canonical key.
+        # Reject non-canonical input where event IDs don't match canonical positions.
+        voices.sort(key=lambda v: (ROLE_ORDER.get(v.role, 99), v.voice_id))
+        events.sort(key=lambda e: e.sort_key)
+
+        # Verify event IDs match canonical positions
+        dup_counter: dict[tuple, int] = {}
+        for idx, evt in enumerate(events):
+            key = evt.sort_key
+            count = dup_counter.get(key, 0)
+            dup_counter[key] = count + 1
+            expected_id = f"evt-{idx:06d}" if count == 0 else f"evt-{idx:06d}-dup-{count}"
+            if evt.event_id != expected_id:
+                raise ValueError(
+                    f"non-canonical event ID at position {idx}: "
+                    f"expected {expected_id}, got {evt.event_id}"
+                )
 
         comp = Composition(
             schema_version=sv,
@@ -472,7 +514,10 @@ def compose(snapshot: NormalizedSnapshot) -> Composition:
     tempo = _clamp(tempo, TEMPO_MIN, TEMPO_MAX)
 
     # ── Loop timing ────────────────────────────────────────────────────
-    loop_dur = canonical_float((LOOP_BARS * BEATS_PER_BAR * 60.0) / (tempo * GRID_DIV))
+    # loop = bars * beats per bar / tempo in BPM * 60 seconds
+    loop_dur = canonical_float(
+        (LOOP_BARS * BEATS_PER_BAR) * 60.0 / tempo
+    )
     repeats = max(1, round(TARGET_DURATION / loop_dur)) if loop_dur > 0 else 1
     render_dur = canonical_float(loop_dur * repeats)
 
@@ -686,7 +731,7 @@ def validate_composition(comp: Composition) -> list[str]:
         errors.append("loop_duration_seconds must be positive")
 
     expected_loop = canonical_float(
-        (comp.bars * comp.beats_per_bar * 60.0) / (comp.tempo_bpm * comp.ticks_per_beat)
+        (comp.bars * comp.beats_per_bar) * 60.0 / comp.tempo_bpm
     )
     if abs(comp.loop_duration_seconds - expected_loop) > 1e-6:
         errors.append(f"loop_duration mismatch: {comp.loop_duration_seconds} vs {expected_loop}")
