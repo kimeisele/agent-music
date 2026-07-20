@@ -52,19 +52,28 @@ jobs:
             echo "No previous render found (first run)"
           fi
 
-      - name: Render — check hash, compose, synth, write WAV
+      - name: Compose — snapshot to canonical Composition
+        id: compose
+        run: |
+          python -m agent_music.cli compose \
+            --input snapshot.json \
+            --output composition.json
+
+      - name: Render — WAV + SVG from persisted Composition
         id: render
         run: |
           if [ -f prev_render.json ]; then
             python -m agent_music.cli render \
-              --input snapshot.json \
-              --output federation.wav \
+              --input composition.json \
+              --wav-output federation.wav \
+              --svg-output federation.svg \
               --metadata-output render.json \
               --prev-metadata prev_render.json
           else
             python -m agent_music.cli render \
-              --input snapshot.json \
-              --output federation.wav \
+              --input composition.json \
+              --wav-output federation.wav \
+              --svg-output federation.svg \
               --metadata-output render.json
           fi
 
@@ -83,12 +92,13 @@ jobs:
         if: steps.check.outputs.state_changed == 'True'
         run: |
           mkdir -p /tmp/render-out
-          cp federation.wav render.json /tmp/render-out/
+          cp federation.wav federation.svg composition.json render.json /tmp/render-out/
           git checkout --orphan render-next
           git rm -rf --cached . 2>/dev/null || true
           rm -rf ./*
-          cp /tmp/render-out/federation.wav /tmp/render-out/render.json .
-          git add -f federation.wav render.json
+          cp /tmp/render-out/federation.wav /tmp/render-out/federation.svg \
+             /tmp/render-out/composition.json /tmp/render-out/render.json .
+          git add -f federation.wav federation.svg composition.json render.json
           git config user.name "agent-music[bot]"
           git config user.email "agent-music[bot]@users.noreply.github.com"
           HASH_SHORT=$(python -c "import json; print(json.load(open('render.json'))['semantic_snapshot_sha256'][:8])")

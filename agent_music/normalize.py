@@ -261,6 +261,11 @@ class NormalizedSnapshot:
         # Canonical ordering — must match from_dict sort key
         nodes.sort(key=lambda n: (n.full_name, n.id_))
 
+        # Build a short-name → full_name mapping for flow key normalization
+        name_map: dict[str, str] = {}
+        for node in nodes:
+            name_map[node.id_] = node.full_name
+
         flows: list[FlowInfo] = []
         for key, weight in raw_flows.items():
             if ">" not in key:
@@ -269,6 +274,9 @@ class NormalizedSnapshot:
             source, target = source.strip(), target.strip()
             if not source or not target:
                 continue
+            # Normalize to canonical owner/repo identity
+            source = name_map.get(source, source)
+            target = name_map.get(target, target)
             flows.append(FlowInfo(
                 source=source,
                 target=target,

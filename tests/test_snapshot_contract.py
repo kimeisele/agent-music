@@ -123,33 +123,52 @@ def test_no_kimeisele_fallback():
 
 
 def test_cli_snapshot_to_render_e2e():
-    """Exercise the same file format used by the GitHub Actions workflow."""
+    """Exercise the full three-stage lifecycle used by the GitHub Actions workflow."""
     import subprocess
     import sys
     import wave
 
     with tempfile.TemporaryDirectory() as tmp:
         snap_path = Path(tmp) / "snapshot.json"
+        comp_path = Path(tmp) / "composition.json"
         wav_path = Path(tmp) / "federation.wav"
+        svg_path = Path(tmp) / "federation.svg"
         meta_path = Path(tmp) / "render.json"
         fixture = Path(__file__).parent / "fixtures" / "active_federation.json"
 
-        # Step 1: Snapshot command (uses from_topology → to_dict)
-        # We can't run the full snapshot in tests (needs network), so simulate
+        # Step 1: Simulate snapshot (offline, no network)
         topo = json.loads(fixture.read_text())
         snap = NormalizedSnapshot.from_topology(topo)
         snap.observed_at = "2026-01-01T00:00:00Z"
         snap_path.write_bytes(snap.to_json_bytes())
 
-        # Step 2: Render command (reads snapshot, composes, writes WAV)
+        # Step 2: Compose command (snapshot → composition.json)
+        result = subprocess.run(
+            [sys.executable, "-m", "agent_music.cli", "compose",
+             "--input", str(snap_path),
+             "--output", str(comp_path)],
+            capture_output=True, text=True,
+        )
+        assert result.returncode == 0, f"compose failed: {result.stderr}"
+
+        # Verify composition.json exists and is valid
+        assert comp_path.exists()
+        comp_data = json.loads(comp_path.read_text())
+        assert comp_data["schema_version"] == 1
+        assert "composition_sha256" in comp_data
+        assert len(comp_data["voices"]) > 0
+        assert len(comp_data["events"]) > 0
+
+        # Step 3: Render command (composition.json → WAV + SVG)
         result = subprocess.run(
             [sys.executable, "-m", "agent_music.cli", "render",
-             "--input", str(snap_path),
-             "--output", str(wav_path),
+             "--input", str(comp_path),
+             "--wav-output", str(wav_path),
+             "--svg-output", str(svg_path),
              "--metadata-output", str(meta_path)],
             capture_output=True, text=True,
         )
-        assert result.returncode == 0, result.stderr
+        assert result.returncode == 0, f"render failed: {result.stderr}"
 
         # Verify WAV is valid and has audio
         assert wav_path.exists()
@@ -159,17 +178,28 @@ def test_cli_snapshot_to_render_e2e():
             assert wf.getsampwidth() == 2
             assert wf.getnframes() > 0
 
+        # Verify SVG exists and is non-empty
+        assert svg_path.exists()
+        svg_raw = svg_path.read_bytes()
+        assert b"<svg" in svg_raw
+        assert b"<rect" in svg_raw or b"<polygon" in svg_raw
+
         # Verify metadata
         meta = json.loads(meta_path.read_text())
+        assert meta["schema_version"] == 2
         assert "semantic_snapshot_sha256" in meta
+        assert "composition_sha256" in meta
         assert "audio_sha256" in meta
+        assert "wav_sha256" in meta
+        assert "svg_sha256" in meta
         assert meta.get("state_changed") is True
 
-        # Step 3: Re-render with previous metadata → should skip synthesis
+        # Step 4: Re-render with previous metadata → should skip synthesis
         result2 = subprocess.run(
             [sys.executable, "-m", "agent_music.cli", "render",
-             "--input", str(snap_path),
-             "--output", str(wav_path),
+             "--input", str(comp_path),
+             "--wav-output", str(wav_path),
+             "--svg-output", str(svg_path),
              "--metadata-output", str(tmp) + "/render2.json",
              "--prev-metadata", str(meta_path)],
             capture_output=True, text=True,

@@ -19,7 +19,7 @@ def _render_wav(name: str, path: Path) -> None:
     snap = NormalizedSnapshot.from_topology(topo)
     comp = compose(snap)
     loop = synth(comp)
-    repeats = comp.repeat_count(48.0)
+    repeats = comp.repeat_count
     all_samples = loop * repeats
     peak = max(abs(s) for s in all_samples) if all_samples else 0.0
     if peak > 0.0:
