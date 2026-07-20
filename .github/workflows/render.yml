@@ -19,6 +19,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -79,16 +80,16 @@ jobs:
       - name: Publish to render branch
         if: steps.check.outputs.changed == 'true'
         run: |
-          # Create a temporary worktree on an orphan render branch
-          git checkout --orphan render-new
+          mkdir -p /tmp/render-out
+          cp federation.wav render.json /tmp/render-out/
+          git checkout --orphan render-next
           git rm -rf --cached . 2>/dev/null || true
-          cp federation.wav render.json /tmp/
           rm -rf ./*
-          cp /tmp/federation.wav /tmp/render.json .
-          git add federation.wav render.json
+          cp /tmp/render-out/federation.wav /tmp/render-out/render.json .
+          git add -f federation.wav render.json
           git config user.name "agent-music[bot]"
           git config user.email "agent-music[bot]@users.noreply.github.com"
-          git commit -m "render: update federation sound [state ${NEW_HASH:0:8}]"
-          git push origin render-new:render --force
+          git commit -m "render: update federation sound [state ${HASH_SHORT}]"
+          git push origin render-next:render --force
         env:
-          NEW_HASH: ${{ steps.hash.outputs.new_hash }}
+          HASH_SHORT: ${{ steps.hash.outputs.new_hash }}
