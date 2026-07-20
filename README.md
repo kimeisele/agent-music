@@ -10,7 +10,9 @@ Because a decentralized agent mesh that nobody can hear is missing half its puls
 
 ## How it works
 
-Every hour, `agent-music` reads the federation's live protocol surfaces — `.well-known/agent-federation.json` descriptors, NADI outbox envelopes, and authority feeds — normalizes the state into a stable snapshot, and translates it into a deterministic musical composition.
+Every hour, `agent-music` **discovers federation nodes dynamically** via the GitHub topic `agent-federation-node`. No participant list is maintained — any repository tagged with the topic becomes a candidate, and is validated through its `.well-known/agent-federation.json` descriptor. The validated live state is normalized into a stable snapshot and translated into a deterministic musical composition.
+
+**Federation membership is discovered, not configured.** Adding a correctly tagged and valid federation node requires no Agent Music code change. Removing the topic or invalidating the descriptor removes the node from future observations.
 
 | Federation Signal | Musical Property |
 |---|---|
@@ -44,16 +46,23 @@ The same federation state always produces byte-identical audio bytes (SHA-256 ve
 ## Render locally
 
 ```bash
-# Render from live federation state
-python -m agent_music.cli render --output federation.wav
+# Discover live federation and write a normalized snapshot
+python -m agent_music.cli snapshot \
+  --config config/federation.json \
+  --output snapshot.json \
+  --metadata-output snapshot-meta.json
 
-# Render from a fixture (offline)
+# Render a snapshot to WAV
+python -m agent_music.cli render \
+  --input snapshot.json \
+  --output federation.wav \
+  --metadata-output render.json
+
+# Offline: render directly from a fixture
 python -m agent_music.cli render \
   --input tests/fixtures/active_federation.json \
-  --output federation.wav
-
-# Print normalized snapshot (dry run)
-python -m agent_music.cli snapshot
+  --output federation.wav \
+  --metadata-output render.json
 
 # Run tests
 python -m pytest tests/ -q

@@ -149,7 +149,7 @@ def compose(snapshot: NormalizedSnapshot) -> Composition:
         octave_offset = ROLE_OCTAVE.get(n.role, 0)
         waveform = ROLE_WAVEFORM.get(n.role, "triangle")
         # Stable voice identity
-        node_hash = _stable_hash(n.id_, seed)
+        node_hash = _stable_hash(n.full_name, seed)  # canonical identity
         scale_idx = node_hash % len(pitches)
         note_midi = pitches[scale_idx] + octave_offset * 12
         # Phase offset so voices don't all hit at once
@@ -162,7 +162,7 @@ def compose(snapshot: NormalizedSnapshot) -> Composition:
         else:
             note_count = max(0, round(norm_activity * 2))
 
-        node_map[n.id_] = {
+        voice_info = {
             "midi": note_midi,
             "waveform": waveform,
             "activity": norm_activity,
@@ -171,6 +171,8 @@ def compose(snapshot: NormalizedSnapshot) -> Composition:
             "scale_idx": scale_idx,
             "node_hash": node_hash,
         }
+        node_map[n.id_] = voice_info
+        node_map[n.full_name] = voice_info   # canonical identity for flow lookups
 
     events: list[NoteEvent] = []
 

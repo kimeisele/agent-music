@@ -31,54 +31,56 @@ jobs:
       - name: Run tests
         run: python -m pytest tests/ -q
 
-      - name: Render federation audio
-        id: render
+      - name: Snapshot — discover, validate, collect
+        id: snapshot
         run: |
-          python -m agent_music.cli render \
+          python -m agent_music.cli snapshot \
             --config config/federation.json \
-            --output federation.wav 2>&1 | tee render.log
-          tail -1 render.log > render_output.json
+            --output snapshot.json \
+            --metadata-output snapshot-meta.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Read current semantic hash
-        id: hash
-        run: |
-          NEW_HASH=$(python -c "import json; print(json.load(open('render_output.json'))['semantic_snapshot_sha256'])")
-          echo "new_hash=$NEW_HASH" >> $GITHUB_OUTPUT
-          echo "New semantic hash: $NEW_HASH"
-
-      - name: Fetch previous render state
+      - name: Fetch previous render metadata
         id: prev
         continue-on-error: true
         run: |
           git fetch origin render 2>/dev/null || true
           if git show origin/render:render.json 2>/dev/null > prev_render.json; then
-            PREV_HASH=$(python -c "import json; print(json.load(open('prev_render.json'))['semantic_snapshot_sha256'])")
-            echo "prev_hash=$PREV_HASH" >> $GITHUB_OUTPUT
-            echo "Previous semantic hash: $PREV_HASH"
+            echo "Fetched previous render metadata"
           else
-            echo "prev_hash=" >> $GITHUB_OUTPUT
-            echo "No previous render found"
+            echo "No previous render found (first run)"
           fi
 
-      - name: Check for changes
+      - name: Render — check hash, compose, synth, write WAV
+        id: render
+        run: |
+          if [ -f prev_render.json ]; then
+            python -m agent_music.cli render \
+              --input snapshot.json \
+              --output federation.wav \
+              --metadata-output render.json \
+              --prev-metadata prev_render.json
+          else
+            python -m agent_music.cli render \
+              --input snapshot.json \
+              --output federation.wav \
+              --metadata-output render.json
+          fi
+
+      - name: Check if render was produced
         id: check
         run: |
-          if [ "${{ steps.hash.outputs.new_hash }}" = "${{ steps.prev.outputs.prev_hash }}" ]; then
-            echo "Federation state unchanged — skipping render"
-            echo "changed=false" >> $GITHUB_OUTPUT
+          STATE_CHANGED=$(python -c "import json; print(json.load(open('render.json')).get('state_changed', True))")
+          echo "state_changed=$STATE_CHANGED" >> $GITHUB_OUTPUT
+          if [ "$STATE_CHANGED" = "True" ]; then
+            echo "New render produced"
           else
-            echo "Federation state changed — publishing new render"
-            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Federation state unchanged — no new render"
           fi
 
-      - name: Create render metadata
-        if: steps.check.outputs.changed == 'true'
-        run: |
-          cp render_output.json render.json
-          echo "Metadata prepared"
-
       - name: Publish to render branch
-        if: steps.check.outputs.changed == 'true'
+        if: steps.check.outputs.state_changed == 'True'
         run: |
           mkdir -p /tmp/render-out
           cp federation.wav render.json /tmp/render-out/
@@ -89,7 +91,6 @@ jobs:
           git add -f federation.wav render.json
           git config user.name "agent-music[bot]"
           git config user.email "agent-music[bot]@users.noreply.github.com"
+          HASH_SHORT=$(python -c "import json; print(json.load(open('render.json'))['semantic_snapshot_sha256'][:8])")
           git commit -m "render: update federation sound [state ${HASH_SHORT}]"
           git push origin render-next:render --force
-        env:
-          HASH_SHORT: ${{ steps.hash.outputs.new_hash }}

@@ -1,16 +1,11 @@
 {
-  "seed_urls": [
-    "https://raw.githubusercontent.com/kimeisele/agent-internet/main/.well-known/agent-federation.json",
-    "https://raw.githubusercontent.com/kimeisele/agent-city/main/.well-known/agent-federation.json",
-    "https://raw.githubusercontent.com/kimeisele/agent-world/main/.well-known/agent-federation.json",
-    "https://raw.githubusercontent.com/kimeisele/agent-research/main/.well-known/agent-federation.json",
-    "https://raw.githubusercontent.com/kimeisele/steward-protocol/main/.well-known/agent-federation.json",
-    "https://raw.githubusercontent.com/kimeisele/steward/main/.well-known/agent-federation.json",
-    "https://raw.githubusercontent.com/kimeisele/steward-federation/main/.well-known/agent-federation.json",
-    "https://raw.githubusercontent.com/kimeisele/steward-test/main/.well-known/agent-federation.json",
-    "https://raw.githubusercontent.com/kimeisele/federation-map/main/.well-known/agent-federation.json"
-  ],
-  "outbox_path": "data/federation/nadi_outbox.json",
-  "user_agent": "agent-music/0.1 (observer node)",
-  "http_timeout": 15
+  "discovery": {
+    "topic": "agent-federation-node",
+    "http_timeout_seconds": 15,
+    "per_page": 100,
+    "max_pages": 10
+  },
+  "collection": {
+    "default_outbox_path": "data/federation/nadi_outbox.json"
+  }
 }

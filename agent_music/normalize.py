@@ -14,11 +14,12 @@ from dataclasses import dataclass, field
 
 @dataclass
 class NodeInfo:
-    id_: str
+    id_: str                 # stable node name (last segment of repo_id)
+    full_name: str           # canonical "owner/repo" identity
     role: str
     active: bool
     feed_available: bool
-    activity: int  # non-negative, outbox depth
+    activity: int            # non-negative, outbox depth
 
 
 @dataclass
@@ -88,8 +89,13 @@ class NormalizedSnapshot:
         # Sort by stable node ID
         for name in sorted(raw_nodes.keys()):
             n = raw_nodes[name]
+            # repo_id is canonical "owner/repo"; fall back to node name
+            full_name = n.get("repo_id", name)
+            if "/" not in full_name:
+                full_name = f"kimeisele/{name}"  # legacy topology compat
             nodes.append(NodeInfo(
                 id_=name,
+                full_name=full_name,
                 role=NormalizedSnapshot._classify_role(
                     n.get("capabilities", []),
                     n.get("layer", "node"),
@@ -137,6 +143,7 @@ class NormalizedSnapshot:
             "schema_version": self.schema_version,
             "nodes": [
                 {
+                    "full_name": n.full_name,
                     "id": n.id_,
                     "role": n.role,
                     "active": n.active,
