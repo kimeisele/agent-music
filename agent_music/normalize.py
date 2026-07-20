@@ -3,6 +3,14 @@
 All music generation operates on ``NormalizedSnapshot``, never on raw
 payloads directly.  The snapshot is deterministically reproducible from
 the same input data regardless of ordering.
+
+Serialization contract:
+
+    snapshot = NormalizedSnapshot.from_topology(topology)
+    data = snapshot.to_dict()
+    # … write data to disk …
+    loaded = NormalizedSnapshot.from_dict(data)
+    assert loaded.semantic_hash() == snapshot.semantic_hash()
 """
 
 from __future__ import annotations
@@ -11,14 +19,17 @@ import hashlib
 import json
 from dataclasses import dataclass, field
 
+SNAPSHOT_SCHEMA_VERSION = 1
+
 
 @dataclass
 class NodeInfo:
-    id_: str
+    id_: str                 # stable node name (last segment of repo_id)
+    full_name: str           # canonical "owner/repo" identity
     role: str
     active: bool
     feed_available: bool
-    activity: int  # non-negative, outbox depth
+    activity: int            # non-negative, outbox depth
 
 
 @dataclass
@@ -36,20 +47,165 @@ class PulseInfo:
     available_feeds: int
 
 
+# ── Validation helpers ──────────────────────────────────────────────────────
+
+
+def _require_str(obj: dict, key: str) -> str:
+    val = obj.get(key)
+    if not isinstance(val, str) or not val:
+        raise ValueError(f"'{key}' must be a non-empty string, got {type(val).__name__}")
+    return val
+
+
+def _require_int(obj: dict, key: str, min_val: int = 0) -> int:
+    val = obj.get(key)
+    if not isinstance(val, int) or val < min_val:
+        raise ValueError(f"'{key}' must be an int >= {min_val}, got {type(val).__name__}")
+    return val
+
+
+def _require_bool(obj: dict, key: str) -> bool:
+    val = obj.get(key)
+    if not isinstance(val, bool):
+        raise ValueError(f"'{key}' must be a bool, got {type(val).__name__}")
+    return val
+
+
+def _require_list_of_dicts(obj: dict, key: str) -> list[dict]:
+    val = obj.get(key)
+    if not isinstance(val, list) or not all(isinstance(v, dict) for v in val):
+        raise ValueError(f"'{key}' must be a list of dicts")
+    return val
+
+
+# ── NormalizedSnapshot ──────────────────────────────────────────────────────
+
+
 @dataclass
 class NormalizedSnapshot:
     """Stable internal representation of federation state.
 
-    All fields are derived deterministically from input data.  Two
-    semantically equivalent inputs MUST produce byte-identical
+    Two semantically equivalent inputs MUST produce byte-identical
     snapshots (excluding ``observed_at``).
+
+    Serialization roundtrip preserves semantic hash exactly:
+
+        snapshot.semantic_hash()
+        ==
+        NormalizedSnapshot.from_dict(
+            json.loads(snapshot.to_json_bytes())
+        ).semantic_hash()
     """
 
-    schema_version: int = 1
+    schema_version: int = SNAPSHOT_SCHEMA_VERSION
     observed_at: str = ""
     nodes: list[NodeInfo] = field(default_factory=list)
     flows: list[FlowInfo] = field(default_factory=list)
     pulse: PulseInfo = field(default_factory=lambda: PulseInfo(0, 0, 0, 0))
+
+    # ── Serialization ──────────────────────────────────────────────────
+
+    def to_dict(self) -> dict:
+        """Serialize to a dict suitable for JSON file storage.
+
+        Includes ``observed_at`` for metadata.  The semantic hash is NOT
+        affected by ``observed_at`` — it is excluded from semantic_bytes().
+        """
+        return {
+            "schema_version": self.schema_version,
+            "observed_at": self.observed_at,
+            "nodes": [
+                {
+                    "id": n.id_,
+                    "full_name": n.full_name,
+                    "role": n.role,
+                    "active": n.active,
+                    "feed_available": n.feed_available,
+                    "activity": n.activity,
+                }
+                for n in self.nodes
+            ],
+            "flows": [
+                {"source": f.source, "target": f.target, "weight": f.weight}
+                for f in self.flows
+            ],
+            "pulse": {
+                "node_count": self.pulse.node_count,
+                "communicating_nodes": self.pulse.communicating_nodes,
+                "in_flight": self.pulse.in_flight,
+                "available_feeds": self.pulse.available_feeds,
+            },
+        }
+
+    def to_json_bytes(self) -> bytes:
+        """Serialize to canonical JSON bytes (with observed_at)."""
+        return json.dumps(
+            self.to_dict(), sort_keys=True, ensure_ascii=True, separators=(",", ":")
+        ).encode()
+
+    @staticmethod
+    def from_dict(data: dict) -> NormalizedSnapshot:
+        """Deserialize a snapshot from a dict.  Validates types and rejects
+        malformed input with ``ValueError``.
+
+        Raises ``ValueError`` on invalid schema_version, missing fields,
+        or wrong field types.
+        """
+        # Validate schema
+        sv = data.get("schema_version")
+        if sv != SNAPSHOT_SCHEMA_VERSION:
+            raise ValueError(
+                f"Unsupported schema_version: {sv!r} (expected {SNAPSHOT_SCHEMA_VERSION})"
+            )
+
+        # Validate nodes
+        raw_nodes = _require_list_of_dicts(data, "nodes")
+        nodes: list[NodeInfo] = []
+        for n in raw_nodes:
+            nodes.append(NodeInfo(
+                id_=_require_str(n, "id"),
+                full_name=_require_str(n, "full_name"),
+                role=_require_str(n, "role"),
+                active=_require_bool(n, "active"),
+                feed_available=_require_bool(n, "feed_available"),
+                activity=_require_int(n, "activity", min_val=0),
+            ))
+
+        # Canonical ordering — two snapshots that differ only in node
+        # array order must produce the same semantic hash.
+        nodes.sort(key=lambda n: (n.full_name, n.id_))
+
+        # Validate flows
+        raw_flows = _require_list_of_dicts(data, "flows")
+        flows: list[FlowInfo] = []
+        for f in raw_flows:
+            flows.append(FlowInfo(
+                source=_require_str(f, "source"),
+                target=_require_str(f, "target"),
+                weight=_require_int(f, "weight", min_val=0),
+            ))
+        flows.sort(key=lambda f: (f.source, f.target, f.weight))
+
+        # Validate pulse
+        raw_pulse = data.get("pulse")
+        if not isinstance(raw_pulse, dict):
+            raise ValueError("'pulse' must be a dict")
+        pulse = PulseInfo(
+            node_count=_require_int(raw_pulse, "node_count", min_val=0),
+            communicating_nodes=_require_int(raw_pulse, "communicating_nodes", min_val=0),
+            in_flight=_require_int(raw_pulse, "in_flight", min_val=0),
+            available_feeds=_require_int(raw_pulse, "available_feeds", min_val=0),
+        )
+
+        return NormalizedSnapshot(
+            schema_version=sv,
+            observed_at=str(data.get("observed_at", "")),
+            nodes=nodes,
+            flows=flows,
+            pulse=pulse,
+        )
+
+    # ── Construction from topology ─────────────────────────────────────
 
     @staticmethod
     def _classify_role(capabilities: list[str], layer: str) -> str:
@@ -77,19 +233,23 @@ class NormalizedSnapshot:
         """Build a normalized snapshot from a federation-map-style topology dict.
 
         This accepts the same topology format produced by federation-map's
-        ``render_topology.py``, so agent-music reuses federation-map's
-        normalization behavior without depending on that repository.
+        ``render_topology.py``.  Topology nodes MUST carry a canonical
+        ``repo_id`` (owner/repo) — no owner is invented.
         """
         raw_nodes = topology.get("nodes", {})
         raw_flows = topology.get("flows", {})
         raw_summary = topology.get("summary", {})
 
         nodes: list[NodeInfo] = []
-        # Sort by stable node ID
         for name in sorted(raw_nodes.keys()):
             n = raw_nodes[name]
+            repo_id = str(n.get("repo_id", "")).strip()
+            if "/" not in repo_id:
+                # Offline/test fixture: use a clearly non-production identity
+                repo_id = f"legacy:{name}"
             nodes.append(NodeInfo(
                 id_=name,
+                full_name=repo_id,
                 role=NormalizedSnapshot._classify_role(
                     n.get("capabilities", []),
                     n.get("layer", "node"),
@@ -98,6 +258,8 @@ class NormalizedSnapshot:
                 feed_available=n.get("has_authority_feed", False),
                 activity=max(0, n.get("depth", 0)),
             ))
+        # Canonical ordering — must match from_dict sort key
+        nodes.sort(key=lambda n: (n.full_name, n.id_))
 
         flows: list[FlowInfo] = []
         for key, weight in raw_flows.items():
@@ -112,7 +274,6 @@ class NormalizedSnapshot:
                 target=target,
                 weight=max(0, weight),
             ))
-        # Sort flows: source, target, weight
         flows.sort(key=lambda f: (f.source, f.target, f.weight))
 
         pulse = PulseInfo(
@@ -128,6 +289,8 @@ class NormalizedSnapshot:
             pulse=pulse,
         )
 
+    # ── Hashing ─────────────────────────────────────────────────────────
+
     def semantic_bytes(self) -> bytes:
         """Return canonical JSON bytes of all musical fields.
 
@@ -137,6 +300,7 @@ class NormalizedSnapshot:
             "schema_version": self.schema_version,
             "nodes": [
                 {
+                    "full_name": n.full_name,
                     "id": n.id_,
                     "role": n.role,
                     "active": n.active,

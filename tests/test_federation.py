@@ -62,11 +62,13 @@ def test_fetch_peer_authority_help() -> None:
 
 
 def test_authority_descriptor_seeds_valid() -> None:
+    """Seeds file exists and is valid JSON — agent-music uses dynamic topic
+    discovery, so an empty list is valid (no static participant inventory)."""
     seeds_path = REPO_ROOT / "data" / "federation" / "authority-descriptor-seeds.json"
     assert seeds_path.exists()
     data = json.loads(seeds_path.read_text())
     assert "descriptor_urls" in data
-    assert len(data["descriptor_urls"]) > 0
+    assert isinstance(data["descriptor_urls"], list)
 
 
 def test_capabilities_json_valid() -> None:

@@ -1,9 +1,10 @@
 """Command-line interface for agent-music.
 
-Usage:
-    python -m agent_music.cli render --output federation.wav
-    python -m agent_music.cli render --input tests/fixtures/active_federation.json
-    python -m agent_music.cli snapshot
+Separated lifecycle:
+  snapshot  — discover → validate → collect → normalize → write files
+  render    — read snapshot → check hash → compose → synth → write WAV
+
+Machine-readable output goes to files (--metadata-output), not stdout.
 """
 
 from __future__ import annotations
@@ -15,9 +16,10 @@ import sys
 import time
 from pathlib import Path
 
-from .collect import collect_federation_state, FederationConfig
+from .collect import collect_federation_state, CollectionResult
+from .discovery import DiscoveryConfig
 from .normalize import NormalizedSnapshot
-from .compose import compose, Composition
+from .compose import compose
 from .synth import synth, samples_to_pcm, SAMPLE_RATE
 from .wav import write_wav, validate_wav
 
@@ -25,45 +27,119 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = REPO_ROOT / "config" / "federation.json"
 
 
+def _load_discovery_config(config_path: str | None) -> DiscoveryConfig:
+    """Load discovery configuration from JSON, validating ranges."""
+    if config_path is None:
+        config_path = str(DEFAULT_CONFIG)
+    cfg = Path(config_path)
+    if cfg.exists():
+        data = json.loads(cfg.read_text())
+        disc = data.get("discovery", {})
+        return DiscoveryConfig(
+            per_page=int(disc.get("per_page", 100)),
+            max_pages=int(disc.get("max_pages", 10)),
+            http_timeout_seconds=float(disc.get("http_timeout_seconds", 15)),
+            max_response_bytes=int(disc.get("max_response_bytes", 10 * 1024 * 1024)),
+        )
+    return DiscoveryConfig()
+
+
+def _load_outbox_path(config_path: str | None) -> str:
+    """Load the outbox path from config, or use the default."""
+    if config_path is None:
+        config_path = str(DEFAULT_CONFIG)
+    cfg = Path(config_path)
+    if cfg.exists():
+        data = json.loads(cfg.read_text())
+        return data.get("collection", {}).get("default_outbox_path", "data/federation/nadi_outbox.json")
+    return "data/federation/nadi_outbox.json"
+
+
 def cmd_snapshot(args: argparse.Namespace) -> int:
-    """Print the normalized snapshot as JSON (dry-run)."""
-    config = _load_config(args.config)
-    print("Collecting federation state...", file=sys.stderr)
-    topology = collect_federation_state(config)
-    if topology is None:
-        print("ERROR: Could not collect federation state.", file=sys.stderr)
+    """Discover, validate, collect, normalize → write snapshot + metadata."""
+    discovery_config = _load_discovery_config(args.config)
+    outbox_path = _load_outbox_path(args.config)
+
+    print("Discovering federation nodes via topic search...", file=sys.stderr)
+    result = collect_federation_state(
+        outbox_path=outbox_path,
+        discovery_config=discovery_config,
+    )
+
+    if not result.has_authoritative_state:
+        print("ERROR: No authoritative federation state collected.", file=sys.stderr)
         return 2
+
+    topology = result.to_topology()
     snapshot = NormalizedSnapshot.from_topology(topology)
-    print(json.dumps(json.loads(snapshot.semantic_bytes()), indent=2))
-    print(f"\nSemantic hash: {snapshot.semantic_hash()}", file=sys.stderr)
+    snapshot.observed_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    semantic_hash = snapshot.semantic_hash()
+
+    # Write serialized NormalizedSnapshot (not raw topology)
+    snapshot_out = Path(args.output)
+    snapshot_out.parent.mkdir(parents=True, exist_ok=True)
+    snapshot_out.write_bytes(snapshot.to_json_bytes())
+
+    # Write metadata
+    meta = {
+        "schema_version": 1,
+        "semantic_snapshot_sha256": semantic_hash,
+        "observed_at": snapshot.observed_at,
+        "candidates_discovered": result.accepted + result.rejected,
+        "nodes_accepted": result.accepted,
+        "nodes_rejected": result.rejected,
+        "rejection_categories": result.rejection_categories,
+        "outboxes_reachable": result.outboxes_reachable,
+        "outboxes_unavailable": result.outboxes_unavailable,
+    }
+    meta_out = Path(args.metadata_output)
+    meta_out.parent.mkdir(parents=True, exist_ok=True)
+    meta_out.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n")
+
+    print(f"Snapshot: {snapshot_out}", file=sys.stderr)
+    print(f"Metadata: {meta_out}", file=sys.stderr)
+    print(f"Semantic hash: {semantic_hash[:16]}...", file=sys.stderr)
+    print(f"Nodes: {result.accepted} accepted, {result.rejected} rejected", file=sys.stderr)
     return 0
 
 
 def cmd_render(args: argparse.Namespace) -> int:
-    """Render federation state to a WAV file."""
-    config = _load_config(args.config)
+    """Read snapshot → hash check → compose → synth → write WAV."""
+    from .normalize import NormalizedSnapshot
 
-    # ── Collect ────────────────────────────────────────────────────────
-    if args.input:
-        # Offline mode: read topology from fixture file
-        topology_path = Path(args.input)
-        if not topology_path.exists():
-            print(f"ERROR: Input file not found: {args.input}", file=sys.stderr)
-            return 1
-        topology = json.loads(topology_path.read_text())
-    else:
-        print("Collecting federation state...", file=sys.stderr)
-        topology = collect_federation_state(config)
-        if topology is None:
-            print("ERROR: Could not collect federation state — no authoritative data.", file=sys.stderr)
-            return 2
+    snapshot_path = Path(args.input)
+    if not snapshot_path.exists():
+        print(f"ERROR: Snapshot not found: {args.input}", file=sys.stderr)
+        return 1
 
-    # ── Normalize ──────────────────────────────────────────────────────
-    snapshot = NormalizedSnapshot.from_topology(topology)
+    # Deserialize NormalizedSnapshot (NOT raw topology)
+    try:
+        data = json.loads(snapshot_path.read_bytes())
+        snapshot = NormalizedSnapshot.from_dict(data)
+    except (json.JSONDecodeError, ValueError) as e:
+        print(f"ERROR: Invalid snapshot: {e}", file=sys.stderr)
+        return 1
+
     semantic_hash = snapshot.semantic_hash()
-    print(f"Semantic hash: {semantic_hash[:16]}...", file=sys.stderr)
 
-    # ── Compose ────────────────────────────────────────────────────────
+    # ── Change detection: check previous hash BEFORE synthesis ────────
+    prev_hash = _load_previous_hash(args.prev_metadata)
+    if prev_hash and prev_hash == semantic_hash:
+        print("Federation state unchanged — skipping render", file=sys.stderr)
+        meta = {
+            "schema_version": 1,
+            "semantic_snapshot_sha256": semantic_hash,
+            "audio_sha256": "",
+            "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "duration_sec": 0,
+            "state_changed": False,
+        }
+        meta_path = Path(args.metadata_output)
+        meta_path.parent.mkdir(parents=True, exist_ok=True)
+        meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n")
+        return 0
+
+    # ── Compose ───────────────────────────────────────────────────────
     composition = compose(snapshot)
     loop_dur = composition.loop_duration_seconds()
     repeats = composition.repeat_count()
@@ -76,30 +152,26 @@ def cmd_render(args: argparse.Namespace) -> int:
         file=sys.stderr,
     )
 
-    # ── Synthesize ─────────────────────────────────────────────────────
+    # ── Synthesize ────────────────────────────────────────────────────
     loop_samples = synth(composition)
-    # Repeat the loop
     all_samples = loop_samples * repeats
 
-    # Crossfade loop boundaries (short linear crossfade to prevent clicks)
+    # Crossfade loop boundaries
     if len(loop_samples) > 0:
-        fade_len = min(int(0.005 * SAMPLE_RATE), len(loop_samples))  # 5ms
+        fade_len = min(int(0.005 * SAMPLE_RATE), len(loop_samples))
         if fade_len > 0:
             for i in range(fade_len):
-                # Fade out end of loop
                 if i < len(all_samples) - fade_len:
                     fade = i / fade_len
                     idx_end = len(all_samples) - fade_len + i
                     if idx_end < len(all_samples):
                         all_samples[idx_end] *= (1.0 - fade)
-                # Fade in start of next loop
                 for r in range(1, repeats):
                     idx = r * len(loop_samples) + i
                     if idx < len(all_samples):
-                        fade = i / fade_len
-                        all_samples[idx] *= fade
+                        all_samples[idx] *= i / fade_len
 
-    # Normalize the full render
+    # Normalize
     peak = max(abs(s) for s in all_samples) if all_samples else 0.0
     if peak > 0.0:
         scale = 0.9 / peak
@@ -107,11 +179,11 @@ def cmd_render(args: argparse.Namespace) -> int:
 
     pcm = samples_to_pcm(all_samples)
 
-    # ── Write WAV ──────────────────────────────────────────────────────
+    # ── Write WAV ─────────────────────────────────────────────────────
     output_path = Path(args.output)
     write_wav(output_path, pcm, sample_rate=SAMPLE_RATE)
 
-    # ── Validate ───────────────────────────────────────────────────────
+    # Validate
     validation = validate_wav(output_path)
     if not validation["valid"]:
         print("WAV validation warnings:", file=sys.stderr)
@@ -119,36 +191,39 @@ def cmd_render(args: argparse.Namespace) -> int:
             print(f"  - {err}", file=sys.stderr)
 
     audio_sha256 = hashlib.sha256(pcm).hexdigest()
-    print(f"WAV written: {output_path}", file=sys.stderr)
-    print(f"SHA-256: {audio_sha256[:16]}...", file=sys.stderr)
-    print(f"Duration: {validation['duration_sec']:.1f}s · "
-          f"Peak: {validation['peak']:.2f} · "
-          f"Has audio: {validation['has_audio']}", file=sys.stderr)
 
-    # Machine-readable last line for workflow consumption
-    print(json.dumps({
+    # Write metadata
+    meta = {
+        "schema_version": 1,
         "semantic_snapshot_sha256": semantic_hash,
         "audio_sha256": audio_sha256,
         "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "duration_sec": validation["duration_sec"],
-    }))
+        "state_changed": True,
+    }
+    meta_path = Path(args.metadata_output)
+    meta_path.parent.mkdir(parents=True, exist_ok=True)
+    meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n")
 
+    print(f"WAV written: {output_path}", file=sys.stderr)
+    print(f"Duration: {validation['duration_sec']:.1f}s · "
+          f"Peak: {validation['peak']:.2f} · "
+          f"Has audio: {validation['has_audio']}", file=sys.stderr)
     return 0
 
 
-def _load_config(path: str | None) -> FederationConfig:
-    if path is None:
-        path = str(DEFAULT_CONFIG)
-    config_path = Path(path)
-    if not config_path.exists():
-        return FederationConfig()
-    data = json.loads(config_path.read_text())
-    return FederationConfig(
-        seed_urls=data.get("seed_urls", []),
-        outbox_path=data.get("outbox_path", "data/federation/nadi_outbox.json"),
-        user_agent=data.get("user_agent", "agent-music/0.1 (observer node)"),
-        http_timeout=data.get("http_timeout", 15),
-    )
+def _load_previous_hash(prev_meta_path: str | None) -> str | None:
+    """Load previous semantic hash from a render metadata file."""
+    if prev_meta_path is None:
+        return None
+    p = Path(prev_meta_path)
+    if not p.exists():
+        return None
+    try:
+        data = json.loads(p.read_text())
+        return data.get("semantic_snapshot_sha256")
+    except (json.JSONDecodeError, OSError):
+        return None
 
 
 def main() -> int:
@@ -157,13 +232,16 @@ def main() -> int:
     )
     sub = parser.add_subparsers(dest="command")
 
-    snap = sub.add_parser("snapshot", help="Print normalized federation snapshot")
+    snap = sub.add_parser("snapshot", help="Discover federation and write normalized snapshot")
     snap.add_argument("--config", default=None, help="Path to config JSON")
+    snap.add_argument("--output", default="snapshot.json", help="Output snapshot JSON path")
+    snap.add_argument("--metadata-output", default="snapshot-meta.json", help="Metadata output path")
 
-    rndr = sub.add_parser("render", help="Render federation state to WAV")
-    rndr.add_argument("--config", default=None, help="Path to config JSON")
+    rndr = sub.add_parser("render", help="Render snapshot to WAV")
+    rndr.add_argument("--input", required=True, help="Input snapshot JSON")
     rndr.add_argument("--output", default="federation.wav", help="Output WAV path")
-    rndr.add_argument("--input", default=None, help="Offline: read topology from fixture JSON")
+    rndr.add_argument("--metadata-output", default="render.json", help="Metadata output path")
+    rndr.add_argument("--prev-metadata", default=None, help="Previous render metadata for change detection")
 
     args = parser.parse_args()
 
