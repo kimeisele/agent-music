@@ -14,35 +14,12 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1785282260.6729884,
+    "timestamp": 1785299637.5675845,
     "priority": 2,
     "correlation_id": "",
     "ttl_s": 7200.0,
-    "id": "8470854f-4fac-4c04-8973-ac1cb4b2358e",
-    "payload_hash": "2fc80858eec35823483f81e19e8357256aab127c36f056e1032bbbc5cf501755",
-    "signature": "o0EWUL9869fBMb7ATBlO2+CCLwo7rPDzxjhiHjrhu0b47S53m/JHqzU9wfoYA6T9qjrvPMgSRbAczEsI7mCGDQ=="
-  },
-  {
-    "source": "ag_95b639fd229e2254",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_95b639fd229e2254",
-      "agent_name": "agent-music",
-      "public_key": "a43e0c3e5834c26f90bd5ab4a82383eea3c8ba302324113d5c5920e62ea08814",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
-    "timestamp": 1785287556.869021,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "3675ee68-ed97-4781-864c-4a990a274cb3",
-    "payload_hash": "5e556a0c27febd4b9da9b420235c27b8e12c5095ffc0ec3e9f15b84e6d9b01da",
-    "signature": "6mK7dbS4iuV4seVsJUpmEyZkR0CQT8fMWvPiAIEKU6bmcdEPdvZpOGgpBnk9Hufg2sMfx8uZlksBeljCXTXHDw=="
+    "id": "c2284503-7d4a-41f4-84d6-56d9aa547913",
+    "payload_hash": "7d58ea381eafe4cdcfb2706eba4348c0c13906f947065770b2052e82d9b2bda2",
+    "signature": "MdVm/RvrDGo5cPy5bD7EXhKxG8DcCeIv66vF9P/oushFJP7cVm2KgCIjZIOTuV4onMyeFGSMw6IStTD/2K6wCQ=="
   }
 ]
