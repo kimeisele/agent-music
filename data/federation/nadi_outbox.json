@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786130211.8691342,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "7d349955-c148-452f-9a77-43abdf039f94",
-    "payload_hash": "79a11cadda1c8860583fd4069f2afacafc115fe4e30de3fe579ef25a6d55f1bc",
-    "signature": "cxTXO34t5h4wFZAi1HmYoYqpefbGWz61nvpEbAB57Ah6IWyvlJAZ1xCew5IF/Ml2V0biciM0ErIciNQV8gdPAw=="
-  },
-  {
-    "source": "ag_341b2694aeac4d77",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_341b2694aeac4d77",
-      "agent_name": "agent-music",
-      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786133199.90701,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "e0112935-ae7e-4cfa-8ac8-8ba13cdee7f9",
     "payload_hash": "1947c800d6c43aaa45b8c583e3ffcf709027d66b73cb63feddad5734af9283af",
     "signature": "PwY2PvcCxmtpGB/HhkvWkWLz6BIOl9zeVrxlSz7wh1v5fpZofIZVk4ND0vPtwxTH1IsbdDg8OkETygpDK+zkAQ=="
+  },
+  {
+    "source": "ag_341b2694aeac4d77",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_341b2694aeac4d77",
+      "agent_name": "agent-music",
+      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786139452.345097,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "188615c9-b0a2-4870-8abf-8b43f5e5ac7b",
+    "payload_hash": "838faf59317f82d0ed6eeda0c2d3cca6683c39b444ba4345dd14358c207fef31",
+    "signature": "+UfrEd2lRdb4GZjtrjhxKltoSQnG+C+6cIQ5DVqJojnf6g0FrSPLH0jytuhzUGBaVzfdBXSyurHtxYsHLtm0Cg=="
   }
 ]
