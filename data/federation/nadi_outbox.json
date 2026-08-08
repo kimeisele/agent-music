@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786216643.012536,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "ac25364e-df32-4f79-a64f-d5214381ea80",
-    "payload_hash": "cf4e1ab0d8a3ae0a6740f6715fa1c39483deeebc8bcea489fa6cc0e54944ad2f",
-    "signature": "QJ5TQ+uXtWTS5MtLsgXHj2c2VitHgT2WhsT61lmw4THppRNMlKYQe92BvVjdvmowIvfpWO95uFT+lxw10wIaDQ=="
-  },
-  {
-    "source": "ag_341b2694aeac4d77",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_341b2694aeac4d77",
-      "agent_name": "agent-music",
-      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786218920.385224,
     "priority": 2,
     "correlation_id": "",
@@ -90,5 +67,28 @@
     "id": "85e3b041-23b4-44d9-9e28-c8bb2007fc32",
     "payload_hash": "469b4eb34025e99bf623acdb08bf91c9119fa4862ac7f69c176e7813f33ad29f",
     "signature": "OrxHcKvWT87fS4FH+vx4cogsbkaHzRvfSdO7ofoE0GFCbwgzXyUxbzG3f+UlZJV7h0S4No8xmnDURpMia1oBDQ=="
+  },
+  {
+    "source": "ag_341b2694aeac4d77",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_341b2694aeac4d77",
+      "agent_name": "agent-music",
+      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786225694.422491,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "cc2d65c9-8153-4f9f-be2a-9cc7b5b8aa9b",
+    "payload_hash": "243832400337fb67dcba257fd2c9b86f55a2a4eb9fa5ce498a205368f4dd8329",
+    "signature": "gsKZ+RY5vheS0Ina+ekk/RQaFlXxmshfiFOxIvR0IMvPNIRLxoOjb1AlX/AZNJNjBZt69Jq7UfCVbD/ujySkDA=="
   }
 ]
