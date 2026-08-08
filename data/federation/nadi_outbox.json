@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786176023.6747367,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "b125a642-37ea-4828-a38d-a973ff47bf14",
-    "payload_hash": "787261df24921c09602815ecede8e50ec30849f86c475b73d224e15c37c8149e",
-    "signature": "zQ9j6NKkk1XPiXTpqrbG4yATG74yIiVGmsAVhPvTr6bA7G1Yh230Zg+j0Xo80KJxiTGLYhuBJGEWd2fD+vqQDw=="
-  },
-  {
-    "source": "ag_341b2694aeac4d77",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_341b2694aeac4d77",
-      "agent_name": "agent-music",
-      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786179704.5047479,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "e275053c-c9a0-4e2b-8660-db2e52b42f8d",
     "payload_hash": "75e28c04bea23185f8b8b70d51b839183a408519d68b5a54cf5e3c1662d32e36",
     "signature": "IPpsY1+6E3IB/4P8bFqCiMXvXoFo3j0E4GOy3DOhqhB6kbV2OK0sZbsc9RlPK6WJw5HggsJgSLDWztfs9ZBDAg=="
+  },
+  {
+    "source": "ag_341b2694aeac4d77",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_341b2694aeac4d77",
+      "agent_name": "agent-music",
+      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786185466.7906222,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "33d8db5b-ccb8-4f31-9494-dc5478e44172",
+    "payload_hash": "798cb2ce65c4a657b94a7d629c802c696b558d7afed54062ac9e8213721d841a",
+    "signature": "+rcB9vTuO0R28j8jNeYV0KND9aBbUbgLblfUwPI3BXDU5gf4sEpFFIEDhX/thnCM3vRGZiUMENnFYU+codvaCQ=="
   }
 ]
