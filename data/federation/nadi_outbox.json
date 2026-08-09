@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786280387.1788893,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "44a0f14e-e9ae-4808-b128-73e3c86d34f3",
-    "payload_hash": "dd42e602e6d81a4f9f7009050b7551a1533ad3ce2b7d5cfeb620c54b4f38db38",
-    "signature": "idZIXDPUtWkPVMTgKH+sJswFfPMQ7K/7BuEXjVRRBtPF4eY+TySz0XBv52ie20y+Z79vMawb4OR620rz23JjBw=="
-  },
-  {
-    "source": "ag_341b2694aeac4d77",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_341b2694aeac4d77",
-      "agent_name": "agent-music",
-      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786283687.4126859,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "eb819bf5-8883-40dc-9fd5-4d5397cb707f",
     "payload_hash": "b31286463776605cc84ae625c1e417465cf834d3cfec9f3ccea024e1f3fbd896",
     "signature": "kpXhTf75wMxayj/e4E3ov7CmJQxxe4o+R7SvuC+dW1LUY9fdqUjtzbrCqgx3j2r3/OqFpmAVk5n4ulWyjEOvAQ=="
+  },
+  {
+    "source": "ag_341b2694aeac4d77",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_341b2694aeac4d77",
+      "agent_name": "agent-music",
+      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786288415.3646412,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "1ea84660-4605-43a5-8bce-c21843d829b4",
+    "payload_hash": "edae77a0d30eabb1baa9e71a29f57c436591465eaf59eb1e31fbf12a78aa3739",
+    "signature": "+QVuXk8lVeVYN9LSJVg5tfBnEVy3qYFK9i+hO2qKA6P+I1OQTj2Drv1xAyCpwp5BIVPuUn2SMzEhCkPOFLNzAQ=="
   }
 ]
