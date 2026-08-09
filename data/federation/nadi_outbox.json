@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786302143.8558464,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "eaed6ff7-9cc3-49b5-8a69-a1d3c574ba10",
-    "payload_hash": "6cfbeb7803d2d63dbd7d97ce59d80aa6f53aaafa944a9893db9bba2efaec19ce",
-    "signature": "glHCjIZActN4vOvm7h3CKYQoGvGOTOntLtTnF03N5PPItGmCgisUiWCzjpxuDeIIRQNpl+McMQ1E5B7LKQ96AA=="
-  },
-  {
-    "source": "ag_341b2694aeac4d77",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_341b2694aeac4d77",
-      "agent_name": "agent-music",
-      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786304963.8449013,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "1a3dc344-582c-488a-943e-1754a3e0668a",
     "payload_hash": "2187d7a72d85c58f1f45078cba457068e30660590b6335918f8757eb62e4c1bb",
     "signature": "th0oUrG9zPjsgAyfAv8kENuKUAHNI+w7ACbKkSaKzMfBPeMIb2u3XRWSbDXqWd8RCb4Z/yrrdfzaQ2ZT355fBQ=="
+  },
+  {
+    "source": "ag_341b2694aeac4d77",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_341b2694aeac4d77",
+      "agent_name": "agent-music",
+      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786310052.5919282,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "7ab1b883-46ac-48e4-9eb7-670993394f2e",
+    "payload_hash": "7eb2211b30c6cdaf94050878a09660014911cc200cbd09906966b1ba2724d4ad",
+    "signature": "vTMKAwuEVPls5cogsS2e/iQeiALkl3VzcnUru3+FbddPBqTsbOAyrCPZUVwpzWaKDz7rbITBkDp5GOLX/i93Cw=="
   }
 ]
