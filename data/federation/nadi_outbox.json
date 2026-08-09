@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786298419.4403293,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "3c048644-5528-47e3-91c2-998165fc451a",
-    "payload_hash": "0a1838992645c5971e509f2ff5b5bdbe631cafbe23b8590b3ae599514c7581ca",
-    "signature": "OXbPCC2HFfeJeyhkgyIjqDeicDbp4s0ZEnHQa5yMOfVVAyQ4bxHirlFn6FXh0UulGR9MgtriIrlkS4oZ2K1PAA=="
-  },
-  {
-    "source": "ag_341b2694aeac4d77",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_341b2694aeac4d77",
-      "agent_name": "agent-music",
-      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786302143.8558464,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "6b554f99-a242-475f-a79f-d7eb3405f434",
     "payload_hash": "9a2076994e6ec7bc8a34e7ed03c1a246044ba668094b6f0789196a12fd9c4708",
     "signature": "C+5/g4PQvL+Wmkycwp7UG2JoRGuEvskW5C9BfkFbBwN9yKn0H3lKIRIYzqb1kHKO1dAWwLz/2O41/jYPblWWAw=="
+  },
+  {
+    "source": "ag_341b2694aeac4d77",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_341b2694aeac4d77",
+      "agent_name": "agent-music",
+      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786307875.397079,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "1a3dc344-582c-488a-943e-1754a3e0668a",
+    "payload_hash": "2187d7a72d85c58f1f45078cba457068e30660590b6335918f8757eb62e4c1bb",
+    "signature": "th0oUrG9zPjsgAyfAv8kENuKUAHNI+w7ACbKkSaKzMfBPeMIb2u3XRWSbDXqWd8RCb4Z/yrrdfzaQ2ZT355fBQ=="
   }
 ]
