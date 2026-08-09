@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786290646.0240488,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "6b513d6e-fe15-4100-b081-2d09263f6dff",
-    "payload_hash": "c710c1278dfb23bf9bbb610a5faf454f348bf3751379c889de306a5ff23a3d1e",
-    "signature": "EKLbpJrra7wQtCjSuKw2k3kRX/Ivn3rKxw1+mpsoZChyijpuTBUQLixtsrBDfI+LBmCA/oMceaXO8sJd+CTDCA=="
-  },
-  {
-    "source": "ag_341b2694aeac4d77",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_341b2694aeac4d77",
-      "agent_name": "agent-music",
-      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786293610.856759,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "15ec0a0d-7840-44aa-8432-9b747294cbc5",
     "payload_hash": "b793efb20d8c3014dc74d3118236511550865d683dc0bd120d99628a64e9bd10",
     "signature": "uu2V9Zfm+221LAyuRyHLbx7g5aTy3+RLqvEdRe9OrssuUHj3pO9/wOS9mGRCAfCQFhzZUDL1Vs72OEJSl2+uDw=="
+  },
+  {
+    "source": "ag_341b2694aeac4d77",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_341b2694aeac4d77",
+      "agent_name": "agent-music",
+      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786298419.4403293,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "3c048644-5528-47e3-91c2-998165fc451a",
+    "payload_hash": "0a1838992645c5971e509f2ff5b5bdbe631cafbe23b8590b3ae599514c7581ca",
+    "signature": "OXbPCC2HFfeJeyhkgyIjqDeicDbp4s0ZEnHQa5yMOfVVAyQ4bxHirlFn6FXh0UulGR9MgtriIrlkS4oZ2K1PAA=="
   }
 ]
