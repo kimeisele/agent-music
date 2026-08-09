@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786310052.5919282,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "7ab1b883-46ac-48e4-9eb7-670993394f2e",
-    "payload_hash": "7eb2211b30c6cdaf94050878a09660014911cc200cbd09906966b1ba2724d4ad",
-    "signature": "vTMKAwuEVPls5cogsS2e/iQeiALkl3VzcnUru3+FbddPBqTsbOAyrCPZUVwpzWaKDz7rbITBkDp5GOLX/i93Cw=="
-  },
-  {
-    "source": "ag_341b2694aeac4d77",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_341b2694aeac4d77",
-      "agent_name": "agent-music",
-      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786312317.8625925,
     "priority": 2,
     "correlation_id": "",
@@ -90,5 +67,28 @@
     "id": "2c44b643-8fda-4617-8084-5e76155ed9c0",
     "payload_hash": "7ddf789509fe222305775673987bc5edf0d9eb37043e3909d3187272b91de556",
     "signature": "WNC2g6KlYRN0Q4wII4Fz6+0WzeaMMIQ/vCLGuaBdWLMEeEuImSNZfAQgJXyMXJzhcqpFtkou6HCIh4e5LauIBQ=="
+  },
+  {
+    "source": "ag_341b2694aeac4d77",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_341b2694aeac4d77",
+      "agent_name": "agent-music",
+      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786319340.6803443,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "e4adb42f-24db-449c-80a8-217a0cbffe24",
+    "payload_hash": "a2c7aa0b0ccc7e4ba14b999eacf65b31339d8464c482e10685a54aced1e05675",
+    "signature": "gmzMfeEujcJcCl04dvoZFfDm2vpRFnWrO7vVoByTL9rHBbCUQGn6rkOEymxZ03te/ONyTZU5CkLxOi9JcAvFAA=="
   }
 ]
