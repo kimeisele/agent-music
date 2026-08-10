@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786393445.6524925,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "858843a0-eaf4-4a0a-b2a2-6c290e53436e",
-    "payload_hash": "4b91abd783d88c0aebca982db7f7dd1b268cbd13200fc74277f3b99142d6c882",
-    "signature": "AGqNba5qNuIoTjEvpErGKMtmn7ESeYv51H9uxazNHXyDzDwxUaJx8gI5eKk9bmxu1NFGsbFdTchW0XgawXWhAw=="
-  },
-  {
-    "source": "ag_341b2694aeac4d77",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_341b2694aeac4d77",
-      "agent_name": "agent-music",
-      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786396813.8439524,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "4d6432c2-e79d-464a-8edd-9eb02638d4a4",
     "payload_hash": "106e90e0a1e367de47e36fe006c91efb793c061cb986db9deb4af528f7db7da5",
     "signature": "Shng3mMQTYH+6l7kjgxJTtR7SMiM5Htrq/Av8DdGtOpcwPj3thF4r0LE0zfUU2pl0ogE6/3Pf3nwYhaRxZlDCA=="
+  },
+  {
+    "source": "ag_341b2694aeac4d77",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_341b2694aeac4d77",
+      "agent_name": "agent-music",
+      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786402631.5887516,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "52acb0f1-b9e0-42ca-90d5-36d86643d24f",
+    "payload_hash": "cf3208685f5f63a42b5c612a0ee47ed3d73a21dddac61f1df58f93c86adc2be2",
+    "signature": "yywAF7OZLkdhJhLFYJJ8yKk29uI23NlgDe4gY44aiwQijLewbdQ5xW1fq/BydQJ4QyvJht6HqNfp6cFrsc6zCQ=="
   }
 ]
