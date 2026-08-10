@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786396813.8439524,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "320485f2-ac21-4367-bca9-70da985e8702",
-    "payload_hash": "c9ffc0f0d2a33e248f040fcb15f1722a2d3e10eb2bb68b113f59041e396f55c4",
-    "signature": "uSPNoo/LR/f/dnhYeHahidaTpsxa8Z/o3pOskXTfJPJpZR/HFiG08Mhrl09sMGSw0bO4Aja6LpRYx2usz9l4Ag=="
-  },
-  {
-    "source": "ag_341b2694aeac4d77",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_341b2694aeac4d77",
-      "agent_name": "agent-music",
-      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786399687.9946012,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "52acb0f1-b9e0-42ca-90d5-36d86643d24f",
     "payload_hash": "cf3208685f5f63a42b5c612a0ee47ed3d73a21dddac61f1df58f93c86adc2be2",
     "signature": "yywAF7OZLkdhJhLFYJJ8yKk29uI23NlgDe4gY44aiwQijLewbdQ5xW1fq/BydQJ4QyvJht6HqNfp6cFrsc6zCQ=="
+  },
+  {
+    "source": "ag_341b2694aeac4d77",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_341b2694aeac4d77",
+      "agent_name": "agent-music",
+      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786405377.2135096,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "93cbf514-acc7-48ae-bd1a-2302704b23e2",
+    "payload_hash": "b231daacdbdc6548524de519c4a12b1c9ace39df2836ae8a7eb0652433b80bdf",
+    "signature": "ai6AnlpB/c/aU97u9Pqhc4lV3qVQLpScUPrAzAvdgYcSvGlA/C9kGiFcZZnvUeb8gpX7qnNsVZX1wV0RYYKACA=="
   }
 ]
