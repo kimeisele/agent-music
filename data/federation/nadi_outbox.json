@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786439352.9801846,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "9af99649-0aad-4340-87f1-b2ac2bd45d45",
-    "payload_hash": "54b666bd02a740d2e9077ba90067d7fb40f5df38438ca1ed8a27137ac61d14b3",
-    "signature": "qSNYyJ+42mBSBx8pzjJcZCb+xT31ZwvhfKnv7kgzyuaHEaTguA8al0u7F7yKtd7Hiutdx8vwH7keZ89OehJzAA=="
-  },
-  {
-    "source": "ag_a9b881883134a2a5",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_a9b881883134a2a5",
-      "agent_name": "agent-music",
-      "public_key": "4029af7ea626b245fa8d47ffe985be4dbbac514fc86f26b9bb914c7b2c5e9ada",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786443130.4197197,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "f94f91fc-3b44-409b-8cd7-fed59d3a9c99",
     "payload_hash": "6981981aeeb4c6bbf780b17b2b963feb858c5b090f7e8aa37a444b7dd299bc77",
     "signature": "/6u/W/x+/JUwFVFZR/1xMApdaF91LeVjF1aYoOcyFMTbxk9BFBrmo2HnqAliuiEkiatzZ20LcakvCxHEOR33DA=="
+  },
+  {
+    "source": "ag_a9b881883134a2a5",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_a9b881883134a2a5",
+      "agent_name": "agent-music",
+      "public_key": "4029af7ea626b245fa8d47ffe985be4dbbac514fc86f26b9bb914c7b2c5e9ada",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786449498.1675527,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "6d68a146-139c-496b-862b-42591ae8374c",
+    "payload_hash": "582475e9d1e43f0b10176acffe1b32c2804b04f4c9a48d7c2edc67937eea3981",
+    "signature": "EbpR9yYOcqiDSVcEDP/srcCCEGDhnKxD+HZOjF6sUUsrNQfY+1nni82rRNLqA9I09Ni5TVpbUoYQvCBcKYJQBw=="
   }
 ]
