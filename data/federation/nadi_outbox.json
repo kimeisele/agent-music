@@ -1,51 +1,5 @@
 [
   {
-    "source": "ag_341b2694aeac4d77",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_341b2694aeac4d77",
-      "agent_name": "agent-music",
-      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
-    "timestamp": 1786402631.5887516,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "52acb0f1-b9e0-42ca-90d5-36d86643d24f",
-    "payload_hash": "cf3208685f5f63a42b5c612a0ee47ed3d73a21dddac61f1df58f93c86adc2be2",
-    "signature": "yywAF7OZLkdhJhLFYJJ8yKk29uI23NlgDe4gY44aiwQijLewbdQ5xW1fq/BydQJ4QyvJht6HqNfp6cFrsc6zCQ=="
-  },
-  {
-    "source": "ag_341b2694aeac4d77",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_341b2694aeac4d77",
-      "agent_name": "agent-music",
-      "public_key": "8190e8b43bf638fab67ff42e0c991beb9704b13b102c5a3bd984fba1146a7658",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
-    "timestamp": 1786405377.2135096,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "93cbf514-acc7-48ae-bd1a-2302704b23e2",
-    "payload_hash": "b231daacdbdc6548524de519c4a12b1c9ace39df2836ae8a7eb0652433b80bdf",
-    "signature": "ai6AnlpB/c/aU97u9Pqhc4lV3qVQLpScUPrAzAvdgYcSvGlA/C9kGiFcZZnvUeb8gpX7qnNsVZX1wV0RYYKACA=="
-  },
-  {
     "source": "ag_a9b881883134a2a5",
     "target": "steward",
     "operation": "federation.agent_claim",
@@ -60,12 +14,12 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786408577.182948,
+    "timestamp": 1786416823.0586996,
     "priority": 2,
     "correlation_id": "",
     "ttl_s": 7200.0,
-    "id": "e4144b78-3252-4d36-9e29-6d88e1780ce5",
-    "payload_hash": "39238be86e3e35b6c8eac59e0f16f5e3d8b770d3669d07cfdbb04eec3b687843",
-    "signature": "a3CKQK2ZeGgo6ya8PEqhtdpPBazY1wL3656St7Vj941Sk0pBYlEgmpCZZ1jAzIj+45Vjk4jJdGfIYxAzlx4pDQ=="
+    "id": "5f228b6e-ee79-4fd2-a73d-9e33a8c4896e",
+    "payload_hash": "c2041ef074eba7f4892c5a084cc0ac8db6fc4b915f63521a9297cc1b68d576d3",
+    "signature": "ySBy+LvpcQyz38aU109xXe1D+uzVm1gAtZrDCJVU+Ip1q7nEVcM/Hb+xFI2qUXFBU0vjOKuifXqKjtghrH4lBg=="
   }
 ]
