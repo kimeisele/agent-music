@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786466328.9466846,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "16a22833-9d82-40bd-b97b-f96cdf9c0b48",
-    "payload_hash": "75e86a26e19171fb6ac4c80e1a0c6b696b34c0ee1ab73a418e8202c0cacdff6b",
-    "signature": "lUzXm74oSwdlN/JNEXd5HtvKl/OJsh5hnp3wXVpZhA8xEGDcpkED2fmz9DJ81Ng/yl1cwFdTOlmi4wh3jTBrDQ=="
-  },
-  {
-    "source": "ag_a9b881883134a2a5",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_a9b881883134a2a5",
-      "agent_name": "agent-music",
-      "public_key": "4029af7ea626b245fa8d47ffe985be4dbbac514fc86f26b9bb914c7b2c5e9ada",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786470163.33851,
     "priority": 2,
     "correlation_id": "",
@@ -44,5 +21,28 @@
     "id": "1f316d42-4aa7-4934-8fa0-4a7707b6bee6",
     "payload_hash": "6ffde5c925691688bdbe9bfb8585408157421dbaf0c6730eec7d69004cfecec0",
     "signature": "e7WCe3Lg6QwrjlAYVy/2q1y/ahTcf6Ij8L5B9qPnkR88y6LttwmxKKbC6I7EN8PUwWhHmZ00/9JEJX66O/hQDw=="
+  },
+  {
+    "source": "ag_6bab4035307cc006",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_6bab4035307cc006",
+      "agent_name": "agent-music",
+      "public_key": "2d8622c8469618d497ad705f0a1e140c1040de417cb5daff60c79d5345c31451",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786473543.174095,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "cf29cbfc-a085-4914-b8f7-920dd153ec3a",
+    "payload_hash": "293088b784196fe644bda810d5af7eaa13468e8e852a895c0da21c7ce580f170",
+    "signature": "kjCzazAoro6WIzP6p3TbWoZb/tYzN5uiN3xDyFLFKe4+M8YalSnathjLrIQqdubALKcDECwAxxtuq4myDlwiCQ=="
   }
 ]
