@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786481487.4611175,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "d7ddaef2-0f4e-4bdf-ac88-9fba1af7f731",
-    "payload_hash": "469d465afc24eab41a7b059d6b22865d709fce994591a51ec14b3a77fe8808a3",
-    "signature": "xEN+crV36irFyDJfuHq35NHvYWYkRykkVF3D8qwlLaTL3IIjG4XMcGi+QYUoB0XuW+gm1cOcC2XG5B6YwwGQAg=="
-  },
-  {
-    "source": "ag_6bab4035307cc006",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_6bab4035307cc006",
-      "agent_name": "agent-music",
-      "public_key": "2d8622c8469618d497ad705f0a1e140c1040de417cb5daff60c79d5345c31451",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786485199.2191937,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "c54904b2-48e0-4f91-9e3e-dc1e7d5ea45a",
     "payload_hash": "118a24dd4d18e15f96bb09e6d84f19c0a3d8c57b7cd75b4d5ed26b6d7f6876de",
     "signature": "pZ+hAVs3RinT/J2rARref40j+3P67QRNVqrCebwQfnuXSM1mv8HXOkS6H1fdHb8J871WPs/hlMiN8krfZTAPBg=="
+  },
+  {
+    "source": "ag_6bab4035307cc006",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_6bab4035307cc006",
+      "agent_name": "agent-music",
+      "public_key": "2d8622c8469618d497ad705f0a1e140c1040de417cb5daff60c79d5345c31451",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786491995.0938568,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "c7a7ab64-5991-40fe-b3d2-df4091d7750d",
+    "payload_hash": "3df7d647bb26ccfb19da77755cf1a1cfd498d9ff2937b94c818b066f1ee49ed7",
+    "signature": "SFQ2PPSRzGQNzKn2z6qPjSEnx/QUFxm86tLPHk9wwmEZTgPEUOi67NUiZFz14hQzS8MzbUr+8kB7ThUlbIFkBA=="
   }
 ]
