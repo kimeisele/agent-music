@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786568731.6322706,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "d4228145-b29e-4a02-bf21-f03755442bbd",
-    "payload_hash": "72c6d1f8518f2acbfb62667d342bce67d6baf3202b6f5c37d60b313d260198ab",
-    "signature": "MAr0TOumNKA5WMmsB6/6p5R1w5luRcDGjfEqtUE1V7fseUKvx596S/k4ZFXmHwmf/oQI2NMWPO4YqEL8o2mOCw=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786572226.6016061,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "23b76976-a68a-4fdc-91c5-f233fa1c10cf",
     "payload_hash": "58387733b60c7f091a7cb3fc134ce4d2f16726c6859b00c9bc2df561b9a316b9",
     "signature": "IJaepVtJw/XZVJC/yd7j+SvB0poHupRSt0geM32YPIHeQFYEKV8ImkdtZLrGiHgV+3tN1c2oA8Z9l3kHmrnPAg=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786579150.4599264,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "3c2933e2-4a71-4e40-8ae0-d2d074dd83d0",
+    "payload_hash": "5c7dc7af46350451bfdc54a7dd2ba2af37ad17395fa2608e868385360773eb71",
+    "signature": "VhkemkvYohGPH2Ca5rDf1ZPmowB3WxrNDjTXri1Tnny+v/wFQJCoC04Q3TNuEGiGlFOJQaqY5OhM7ob/zdANAg=="
   }
 ]
