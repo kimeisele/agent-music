@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786562872.743454,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "960bf06e-c8d6-4efa-b6a6-3c774eb23439",
-    "payload_hash": "3dc95f64e334aa3db11e7de9845150c2049fb2707e8c8f2cf561fa36eeb72e30",
-    "signature": "CueaueAzJ91ZhDyxXzdu+KBCMNSjkiF5NPskbFQlt3FvFKvTJLOexh+/lfmS0YaNwCObAq5Ep4UjH02SzEshDw=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786565496.0897257,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "d4228145-b29e-4a02-bf21-f03755442bbd",
     "payload_hash": "72c6d1f8518f2acbfb62667d342bce67d6baf3202b6f5c37d60b313d260198ab",
     "signature": "MAr0TOumNKA5WMmsB6/6p5R1w5luRcDGjfEqtUE1V7fseUKvx596S/k4ZFXmHwmf/oQI2NMWPO4YqEL8o2mOCw=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786572226.6016061,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "64cdc9b1-2817-43ff-b2d6-dea5ea7c5a4c",
+    "payload_hash": "33e527a208a351157f5c1436e4a7d836fa2da2669f252bcdb70270a90d667e04",
+    "signature": "Mdb/qLhCinEAnWbIBLMq/NAPTkHhnjb26Yk5HpeSWIx3uy3mB7vKzUvbBikDqRmZ3tXjpDEbiIRFLfHKGnKxAg=="
   }
 ]
