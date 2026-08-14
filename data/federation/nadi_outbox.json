@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786729187.44335,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "e87f94b1-c958-4922-bf64-1145e9aacced",
-    "payload_hash": "3718761031db03bd26e99c42569b0c3e90a8c4dedb471c10074150c4529aaff0",
-    "signature": "T0XVIqMHeYaZsaRpDr1IGdyIvJQwtiu1ZxhNWZELGCDG7Q0bk6bYNdQ4Sdtp+ROhGrlinAAt1q3WPKotUUgsAQ=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786732452.8867085,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "65b4d868-4bed-4577-a984-4311713ec514",
     "payload_hash": "4617e8c95b72f5a30b26f161b2f88ffe628ea5d76135e9a9655ee3ae66cee5c7",
     "signature": "3DtoX5rHPH3uoTec/lZazJKv7Pin2bNhZB9TK0JXR0CBayyfo3e19SXxgwrYG0408BoKVWQDqkm3skLHcqVeAQ=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786738552.7944012,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "361c0f12-355f-45d9-9215-6111a9eb9c58",
+    "payload_hash": "c693492618ff521f1dd2fd92d21b2527ffbf6bf08bf02a3339fbdaa76a8e168b",
+    "signature": "ybFBIWtq3p/HsmGkuk98lpViO7nFsKFoUBBYzcpMozcO4hBEmbowY2tcQLh5IcOI6ZlsYlFOpqrNG/q9lOWNDA=="
   }
 ]
