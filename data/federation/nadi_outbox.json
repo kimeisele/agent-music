@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786741018.7041876,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "20cecebc-3375-41e0-be97-ad20ed7948b9",
-    "payload_hash": "105f467725225c88378759efb6d68e748b8a39d04fbfe3afa9e52fde93489268",
-    "signature": "4ISBeZ8YJIKseHLlRKFwXalsn6MNimru9mOz7HvwbjOMi1qdmM7EUrjKEe3NZILH7qdGDruKtX4A0cHxdvRTDQ=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786743188.2432618,
     "priority": 2,
     "correlation_id": "",
@@ -90,5 +67,28 @@
     "id": "5e98188f-999a-448c-8ece-39d920339063",
     "payload_hash": "9ca95df1b99653ea8bbeb00f0df3d2d288690045db1be72a01ebb03608bdf65d",
     "signature": "84SBZNGATdtqk/8GBmwoe9z+h6abqOOX9tcg6UzLufsdygPFuIhjxgJJo55EBJmv4+0vJhQzpV6zK+fp9dIUDQ=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786748457.820411,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "ca61180d-6237-4eb6-80dd-9fadceea0663",
+    "payload_hash": "3ea8b5972aa607b99fd55bb5b588ae450c7a1d6b6c1116c3d966f0e4e8419293",
+    "signature": "k8m8ZVs/Cneqo6LR3sP960qgcL382RC4z0gkKBL7Z0aPaALOywtDw0sh4FjT++hxt4/7Cu9f+1GLmneweItPAA=="
   }
 ]
