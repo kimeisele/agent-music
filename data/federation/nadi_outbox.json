@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786725258.7665787,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "2f730a6a-f2e7-4587-9216-e1692877f7c7",
-    "payload_hash": "01e75716276b148fb4bec626779f46d6c09048422d1fe3263d367adfe0f634bf",
-    "signature": "GqHu2CUCRnZIHH8FvgjAblU6woCzDzoeIQnFtaJJGeBVUVHjMuEJ9SLtwkQVeT4y6ql9tO/bgKZ78StFxHjzDw=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786729187.44335,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "10219759-5893-477f-b132-13a48f95be68",
     "payload_hash": "fab658f8367b91bea513a76a79dfe76ce390f51acb25d84cbaff562dbc0946b4",
     "signature": "gTfYyRl4r0g6s593LuTwkkbzz5eJxvIQUwZ0Fl1XForvUvtM4yZzrC2aAHsKAZCN8oG7YdiCO7c0u+B4TkfQCw=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786736287.8380277,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "65b4d868-4bed-4577-a984-4311713ec514",
+    "payload_hash": "4617e8c95b72f5a30b26f161b2f88ffe628ea5d76135e9a9655ee3ae66cee5c7",
+    "signature": "3DtoX5rHPH3uoTec/lZazJKv7Pin2bNhZB9TK0JXR0CBayyfo3e19SXxgwrYG0408BoKVWQDqkm3skLHcqVeAQ=="
   }
 ]
