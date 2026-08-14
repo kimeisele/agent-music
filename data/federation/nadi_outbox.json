@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786732452.8867085,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "10219759-5893-477f-b132-13a48f95be68",
-    "payload_hash": "fab658f8367b91bea513a76a79dfe76ce390f51acb25d84cbaff562dbc0946b4",
-    "signature": "gTfYyRl4r0g6s593LuTwkkbzz5eJxvIQUwZ0Fl1XForvUvtM4yZzrC2aAHsKAZCN8oG7YdiCO7c0u+B4TkfQCw=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786736287.8380277,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "361c0f12-355f-45d9-9215-6111a9eb9c58",
     "payload_hash": "c693492618ff521f1dd2fd92d21b2527ffbf6bf08bf02a3339fbdaa76a8e168b",
     "signature": "ybFBIWtq3p/HsmGkuk98lpViO7nFsKFoUBBYzcpMozcO4hBEmbowY2tcQLh5IcOI6ZlsYlFOpqrNG/q9lOWNDA=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786741018.7041876,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "20cecebc-3375-41e0-be97-ad20ed7948b9",
+    "payload_hash": "105f467725225c88378759efb6d68e748b8a39d04fbfe3afa9e52fde93489268",
+    "signature": "4ISBeZ8YJIKseHLlRKFwXalsn6MNimru9mOz7HvwbjOMi1qdmM7EUrjKEe3NZILH7qdGDruKtX4A0cHxdvRTDQ=="
   }
 ]
