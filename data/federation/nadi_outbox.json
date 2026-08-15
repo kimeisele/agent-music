@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786773670.597871,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "6b229912-9ae7-4075-8351-e9014ee5ea47",
-    "payload_hash": "8880a30c4d88d8f73a7a44a30e99b3e3470cceac7b075c329ad503ec425d9b2b",
-    "signature": "N+17p17hRFQihSrHQG2+IRwFXwVXf+ImMhBeFLWWMt00U25tBtqm5SD1Mr26ReKwfOLDYKG/8iYGhWPl0rTXBQ=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786777096.3616462,
     "priority": 2,
     "correlation_id": "",
@@ -90,5 +67,28 @@
     "id": "dbc6a0a2-32ed-4990-95f5-fe3899829fc9",
     "payload_hash": "02bb169ab646301a429369ccd54ce27e8007f4c8e208bc2ac850d07a5de03073",
     "signature": "hIjZg+8UMJBxsI7q+W5YlAEf0FYjo+qxou1AmkJfb+HuZmqWml8tEQ7+5joRWJhnXLZYzGVa68hmnvJ69bH/Ag=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786783556.6870184,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "0161d34e-cea7-4e0c-bda5-120c0c6ad835",
+    "payload_hash": "3333d45aa01415f606d7abfb3ca64485f0079ba7ee2a082e84023636244f34c2",
+    "signature": "YBvoO8FvgdqftdIH8701fiR88LpLt4mNt+v9JCTAnMf/DL7/IXakqEgSUtiZRdoAxaHZKV1L5f38HnK+I83eDg=="
   }
 ]
