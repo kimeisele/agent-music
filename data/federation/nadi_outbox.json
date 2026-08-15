@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786825958.7865803,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "5374b614-2271-4157-9c66-4b12b6ea310b",
-    "payload_hash": "d58d09aa1468716977888dcc1dc8d1e2018f65c9eeecb76b854d154b512ffafe",
-    "signature": "9PpzwsFJYL9Czvrm+9lnr3EAY8mvph5uiWbkgiiHZOKDG2exDhAzECbPJdO3ri02jnFuULL1Hw0/UN/Yp8Z9Cw=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786827629.700459,
     "priority": 2,
     "correlation_id": "",
@@ -113,5 +90,28 @@
     "id": "e35f44e0-fb2f-4350-9bd8-84dcd0d89e2e",
     "payload_hash": "b6a7ba660d257cc8df2d9aedccb6caa44e7263b2b84cace31ffb6b21fff3fc68",
     "signature": "oe2oNnkuM69osfUzGS/euTocUag/79mzisacAKLl24fn/oeG9yzOjQyJkWk8hYeMr2YguHF+fxkIqjZUNKIACQ=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786834766.0280514,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "205acb23-e9f3-4ce2-a734-271ce9b4dcc6",
+    "payload_hash": "a8cb0b197471dd875fbff38b3e9276aa6788d0f38815e9cba785f36416614ada",
+    "signature": "7lZoGuhMC3m1F1IrFDnRQ/bZ/fwiqFceiTjOREB6g/AXg4qihx5ldM98uKKT+CF+QTPekq9bQ/i7jsgNfKZ+Aw=="
   }
 ]
