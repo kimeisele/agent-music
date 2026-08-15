@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786822557.6589606,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "0e7eeead-d620-4c9d-8ad3-4d9c0ef63176",
-    "payload_hash": "bbb10942317322d97aace0109f68cd021fee8431f16f58915cecde4b2a11b394",
-    "signature": "THh0N+NotDe3QUS5CWd7rwhGfcqNdE75ToPQrlKij1J1QDkeGCt9ZExAZpOXuIovZRjqIbpnpLn/Gyh/IQvhCQ=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786823893.2364104,
     "priority": 2,
     "correlation_id": "",
@@ -113,5 +90,28 @@
     "id": "5b6b3f7b-b001-4f44-9290-04419b2b743a",
     "payload_hash": "4746e09831411195e5b04290a0e5214f758e41fc834ec49a7fdb31f272f1cfbe",
     "signature": "Xdx5OgMM52BJg8jvxHQPA/pxzM5Ra0iTwdFHxq21mRp/o9beWk8u2Urz2//tPwhTajN8ef+SNMuQhKpgl3oOAA=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786831062.2112868,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "1b8372eb-de1b-45f4-ad51-ae1344630f3b",
+    "payload_hash": "4df23ec44fc977d706fe859d68b6ad38d3f168e56cb22ec706b5727464f9a416",
+    "signature": "VHknkhwjZin9sdpWWnlb5H8Xqrm0NbzdFFpEkYXqZb3FcvaHu7yjgkK1PKpIs8yGpR+hAZtaxNkN69/db8CNDQ=="
   }
 ]
