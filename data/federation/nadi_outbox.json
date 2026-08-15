@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786779412.8516672,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "76bcc1d5-0f28-479b-814a-ead4205fdac3",
-    "payload_hash": "e13baf81426f02a5a1474c46942c631f8b0e4641335cec8fd5a1fa154d0d7b25",
-    "signature": "mim+cBiA1Q88/gCIR0Gaz5QB13x+jQQxCeqnGqviQm08+j9PYV10JMdQgWtXsr/WMeQiwu7FjIJGAfFqsrBlCQ=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786780847.7096238,
     "priority": 2,
     "correlation_id": "",
@@ -90,5 +67,28 @@
     "id": "7416f2d4-5e12-45b5-93fa-4c8b45a51199",
     "payload_hash": "1ab943ca2b470a6982d168533b6364f85c68efd61b558afa284f6fa11cc4c8f5",
     "signature": "P7cRQmEd2EALZE4JLJaoXGxZO+nPS2Z1/aDEPxkdTET0/8nC+2bZw7X9ZOPLkx7iFqE4keKERCHo5BsK1K4ICg=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786787602.3575118,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "ed7d1e27-5018-4105-ae68-fd9ccaf7f890",
+    "payload_hash": "5aac9ffb77695983a05a4a530285252d67522147f554844f582311dfd8366d80",
+    "signature": "1r0aInJgJrvgqSam8h63QJ8vtdT6amtAUai3Q88p8Yo+zPCJlH5lNQNW4EPOWDerWelg5fLmSRTv1/4UttjpDg=="
   }
 ]
