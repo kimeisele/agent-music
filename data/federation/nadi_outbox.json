@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786816083.876194,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "33ed2657-7043-480c-af0b-d5885d84be88",
-    "payload_hash": "075eb84be7ac3282c70ce141acdc1164984d9a8bd6af57bbb1f96ad63513deb3",
-    "signature": "Uyg3GzkkgCzMdVOEMBm9n78KR7ZFBy1MInZArgkygGrb3ZXB0v18Z/QbFljChfsEdjNe7XlZ29Vk4UuU+bImBA=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786818916.578417,
     "priority": 2,
     "correlation_id": "",
@@ -90,5 +67,28 @@
     "id": "0e7eeead-d620-4c9d-8ad3-4d9c0ef63176",
     "payload_hash": "bbb10942317322d97aace0109f68cd021fee8431f16f58915cecde4b2a11b394",
     "signature": "THh0N+NotDe3QUS5CWd7rwhGfcqNdE75ToPQrlKij1J1QDkeGCt9ZExAZpOXuIovZRjqIbpnpLn/Gyh/IQvhCQ=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786823893.2364104,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "d23c3294-9336-494a-9e00-8cd5e636de74",
+    "payload_hash": "8cf6852e1abfadbc198d4fdb57d041b1d6c8de41fbad1af0cd01ab1353252585",
+    "signature": "TznXPMleTtHQqBrK9JY3ZLJv5KTPzoGbdSVk2J91CiqV6Q0WJCVBHHAwxmQMOQ2XLiOlj5Hv+Vv4ZM01YODoCw=="
   }
 ]
