@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786814645.1706142,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "1276354c-9fb3-42b9-b6b5-cde5564b541c",
-    "payload_hash": "a5ec08e910706a239d2c3f7de6f82b8ca737ab41e1f885b4489b04c29f92eca4",
-    "signature": "DsBRkpDDt93htnaZDNDjXOhTItUscsGt4l0PxqWOeC/ph1jgatOtCXBfM2IfOKagUhd8UQfczGELFvpWL5wHDA=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786816083.876194,
     "priority": 2,
     "correlation_id": "",
@@ -90,5 +67,28 @@
     "id": "37ac75e1-3765-4f2e-86d8-ea910eacfb28",
     "payload_hash": "45e2970047b7324f699839f9e4bc2fca8b4ef4ae64056fecb5968d2c1bd71264",
     "signature": "FWD3/5BxSGhK+w5XvdkUNlXiF4kw+Lhw1r/RkaWAvyW75Xfs+p0S9C7XKG/sEdbwY12E5hhS4N3cCjeLvq2DAQ=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786822557.6589606,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "0e7eeead-d620-4c9d-8ad3-4d9c0ef63176",
+    "payload_hash": "bbb10942317322d97aace0109f68cd021fee8431f16f58915cecde4b2a11b394",
+    "signature": "THh0N+NotDe3QUS5CWd7rwhGfcqNdE75ToPQrlKij1J1QDkeGCt9ZExAZpOXuIovZRjqIbpnpLn/Gyh/IQvhCQ=="
   }
 ]
