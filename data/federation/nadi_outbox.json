@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786777096.3616462,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "43193ec0-7199-4a93-9b24-442dccf5c175",
-    "payload_hash": "edfb6ee336f3335170132c14a9f63b74f0d4a3d2c7a82fb4949b4c98955caabf",
-    "signature": "cDNe0gNWbopZ5mBdJAqOJ+lpKrak+RH8TUNfDqQ+g0qsluYg4l4uIlqzR2x0Rt++hMaRFcpcjPrBsLB2FIR/Aw=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786779412.8516672,
     "priority": 2,
     "correlation_id": "",
@@ -90,5 +67,28 @@
     "id": "0161d34e-cea7-4e0c-bda5-120c0c6ad835",
     "payload_hash": "3333d45aa01415f606d7abfb3ca64485f0079ba7ee2a082e84023636244f34c2",
     "signature": "YBvoO8FvgdqftdIH8701fiR88LpLt4mNt+v9JCTAnMf/DL7/IXakqEgSUtiZRdoAxaHZKV1L5f38HnK+I83eDg=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786786183.2494025,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "7416f2d4-5e12-45b5-93fa-4c8b45a51199",
+    "payload_hash": "1ab943ca2b470a6982d168533b6364f85c68efd61b558afa284f6fa11cc4c8f5",
+    "signature": "P7cRQmEd2EALZE4JLJaoXGxZO+nPS2Z1/aDEPxkdTET0/8nC+2bZw7X9ZOPLkx7iFqE4keKERCHo5BsK1K4ICg=="
   }
 ]
