@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786771998.335075,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "2a414c73-6986-473a-a766-ca4750e40973",
-    "payload_hash": "6f9f7587cf686edbed54e0b049b19f4e6e895225fba8395d1e92ed932f96c1d4",
-    "signature": "bR93quk2NpkBQTJeNRcnjfV1FJvQQwMwXtoeem+xx5vdE1A6cpuestcPGH2hrj02tRTMUUjP+v3EjOqM2ZsDAQ=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786773670.597871,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "43193ec0-7199-4a93-9b24-442dccf5c175",
     "payload_hash": "edfb6ee336f3335170132c14a9f63b74f0d4a3d2c7a82fb4949b4c98955caabf",
     "signature": "cDNe0gNWbopZ5mBdJAqOJ+lpKrak+RH8TUNfDqQ+g0qsluYg4l4uIlqzR2x0Rt++hMaRFcpcjPrBsLB2FIR/Aw=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786779412.8516672,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "76bcc1d5-0f28-479b-814a-ead4205fdac3",
+    "payload_hash": "e13baf81426f02a5a1474c46942c631f8b0e4641335cec8fd5a1fa154d0d7b25",
+    "signature": "mim+cBiA1Q88/gCIR0Gaz5QB13x+jQQxCeqnGqviQm08+j9PYV10JMdQgWtXsr/WMeQiwu7FjIJGAfFqsrBlCQ=="
   }
 ]
