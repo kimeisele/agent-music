@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786827629.700459,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "37939c67-2f73-44a6-8e48-e018cf254d5f",
-    "payload_hash": "505b710c9ebd00d79301198df2a5e4c45ed66fc61f3c5b0d497fce7ff946c1bc",
-    "signature": "qVsbxz1AGGKV1YgS308o1C5gZwQROzsRCKaBjLQP6i84H89pR/ZQX9pIVJ0bw0eC8lVbTDQ+O6bFyEA/Ms4dCg=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786829738.8797941,
     "priority": 2,
     "correlation_id": "",
@@ -113,5 +90,28 @@
     "id": "205acb23-e9f3-4ce2-a734-271ce9b4dcc6",
     "payload_hash": "a8cb0b197471dd875fbff38b3e9276aa6788d0f38815e9cba785f36416614ada",
     "signature": "7lZoGuhMC3m1F1IrFDnRQ/bZ/fwiqFceiTjOREB6g/AXg4qihx5ldM98uKKT+CF+QTPekq9bQ/i7jsgNfKZ+Aw=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786836532.38154,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "7030054f-cd6d-412e-92f2-4c1899b49946",
+    "payload_hash": "30903ea3ab22db6bc85cda141b3e736923dd658c64bc17c84d26d083643cf666",
+    "signature": "H9b8NzPFS0GEpM+MBvJ0HH5sYg5cw3ahF5hthJM8cq4IRPqf6XIj1SLU4h8K38R+/ozJ1zIDx1p1RSDGrsI6Aw=="
   }
 ]
