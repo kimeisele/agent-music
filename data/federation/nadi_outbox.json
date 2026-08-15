@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786758641.782198,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "3a3b8046-db7e-4a79-892f-3e2852b3b939",
-    "payload_hash": "e9aea5363a7460fa91e58295a2a5615c32430d97588b34cc63bb7d7d5432ec2e",
-    "signature": "g0ck2QeWoH1qUCXRbWzUcW39S5/J6bVFr58ZejK+y3AMJForL5Uuyi57vWt6GHCnoY4rs8PoC86TAFrZGX6yCQ=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786762530.6434252,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "819522b2-ce0d-4502-afcf-9ad28868a57f",
     "payload_hash": "6e5ae60e190b943b256d7c3e719eefba4d10b1d7f94a6ee3775c03cd6770cf62",
     "signature": "vALdkqjUbDNbXq2FXCr/c1OfSicyTS4jph6n72IWAHgHeLt4jMje1JZyB3QyBrMLmzHi01zFtBJhtU4igXGPBA=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786767316.8390133,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "782449e5-a2c0-42e0-8e4d-840eafca5391",
+    "payload_hash": "fc2c55f6ab3bdde03682bc65edaa74290d21cccdbb663439481c82aa7b4238c3",
+    "signature": "0DwmQOY0Fn5VY3CXlN3FYEnoYM1sFa/o/R4BYXS/NbhveF37pHf7r/Tv6OO2RaM6yBUZ7cg7v6Gh4AFnBKJ2CQ=="
   }
 ]
