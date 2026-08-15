@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786805494.940448,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "7a501cba-787f-4246-834a-ee9e4e2a04d4",
-    "payload_hash": "7f22a788dc285ee7b33c85d4c6e632577f99ba7aeaeedb291318b950d7028492",
-    "signature": "4QfF4f9z+zKHiX7ak8dZp+XqH6KZlmK4XJoOQR8jJTYWnrkRN25CA0BjBFVbL6DbFF0Iq4b8+0MAsqDAEXaKAw=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786807507.7168722,
     "priority": 2,
     "correlation_id": "",
@@ -90,5 +67,28 @@
     "id": "dc9fe4ac-25de-4a4e-84ff-8cb18198ab50",
     "payload_hash": "0eca06c1a2a0e63e74de1029236d7d2850eee91aed7fa7ce5806286f948b6404",
     "signature": "25CcuCV2q79k469n4ODgobK7QCw4Z9xEJbtjFqqKMLHWPVDQHfdn7LoFisCsb09IIUj4a6YszCARYpdV3w/5Dw=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786812866.1440294,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "e0b86d9e-e4ea-4dab-9422-3b54dc87e9dc",
+    "payload_hash": "b49d19342ec7ad83a6a8e1e75351a52cd0c52dc2228627cb0c39e3296bf5062c",
+    "signature": "WiNiSWWcjnjpbRDkTLJf6yD4W6GOPWuFskkTDxp/lgO+pFaVtVsyWX//lgVccIb0QB0lBeo1MvuPZrCemE7aDw=="
   }
 ]
