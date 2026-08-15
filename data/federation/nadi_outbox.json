@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786780847.7096238,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "dbc6a0a2-32ed-4990-95f5-fe3899829fc9",
-    "payload_hash": "02bb169ab646301a429369ccd54ce27e8007f4c8e208bc2ac850d07a5de03073",
-    "signature": "hIjZg+8UMJBxsI7q+W5YlAEf0FYjo+qxou1AmkJfb+HuZmqWml8tEQ7+5joRWJhnXLZYzGVa68hmnvJ69bH/Ag=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786783556.6870184,
     "priority": 2,
     "correlation_id": "",
@@ -90,5 +67,28 @@
     "id": "ed7d1e27-5018-4105-ae68-fd9ccaf7f890",
     "payload_hash": "5aac9ffb77695983a05a4a530285252d67522147f554844f582311dfd8366d80",
     "signature": "1r0aInJgJrvgqSam8h63QJ8vtdT6amtAUai3Q88p8Yo+zPCJlH5lNQNW4EPOWDerWelg5fLmSRTv1/4UttjpDg=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786789603.2910311,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "37ca1aa1-e9f9-4c36-973f-588eeb68a9f5",
+    "payload_hash": "9235df03cd9d447db3eb9a411ac081753542170454ceb92737ad4cf69c9b8210",
+    "signature": "Roy+722Cys6409DYmcXm4tnqzXugLeGZHxc7AlQ0KN6C1DidMJfjKfYtdnw98avXoV9DK+jzkEd3P/oytF2CAg=="
   }
 ]
