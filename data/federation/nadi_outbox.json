@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786823893.2364104,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "d23c3294-9336-494a-9e00-8cd5e636de74",
-    "payload_hash": "8cf6852e1abfadbc198d4fdb57d041b1d6c8de41fbad1af0cd01ab1353252585",
-    "signature": "TznXPMleTtHQqBrK9JY3ZLJv5KTPzoGbdSVk2J91CiqV6Q0WJCVBHHAwxmQMOQ2XLiOlj5Hv+Vv4ZM01YODoCw=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786825958.7865803,
     "priority": 2,
     "correlation_id": "",
@@ -113,5 +90,28 @@
     "id": "1b8372eb-de1b-45f4-ad51-ae1344630f3b",
     "payload_hash": "4df23ec44fc977d706fe859d68b6ad38d3f168e56cb22ec706b5727464f9a416",
     "signature": "VHknkhwjZin9sdpWWnlb5H8Xqrm0NbzdFFpEkYXqZb3FcvaHu7yjgkK1PKpIs8yGpR+hAZtaxNkN69/db8CNDQ=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786833058.056562,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "e35f44e0-fb2f-4350-9bd8-84dcd0d89e2e",
+    "payload_hash": "b6a7ba660d257cc8df2d9aedccb6caa44e7263b2b84cace31ffb6b21fff3fc68",
+    "signature": "oe2oNnkuM69osfUzGS/euTocUag/79mzisacAKLl24fn/oeG9yzOjQyJkWk8hYeMr2YguHF+fxkIqjZUNKIACQ=="
   }
 ]
