@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786765443.0760288,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "819522b2-ce0d-4502-afcf-9ad28868a57f",
-    "payload_hash": "6e5ae60e190b943b256d7c3e719eefba4d10b1d7f94a6ee3775c03cd6770cf62",
-    "signature": "vALdkqjUbDNbXq2FXCr/c1OfSicyTS4jph6n72IWAHgHeLt4jMje1JZyB3QyBrMLmzHi01zFtBJhtU4igXGPBA=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786767316.8390133,
     "priority": 2,
     "correlation_id": "",
@@ -90,5 +67,28 @@
     "id": "2a414c73-6986-473a-a766-ca4750e40973",
     "payload_hash": "6f9f7587cf686edbed54e0b049b19f4e6e895225fba8395d1e92ed932f96c1d4",
     "signature": "bR93quk2NpkBQTJeNRcnjfV1FJvQQwMwXtoeem+xx5vdE1A6cpuestcPGH2hrj02tRTMUUjP+v3EjOqM2ZsDAQ=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786773670.597871,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "6b229912-9ae7-4075-8351-e9014ee5ea47",
+    "payload_hash": "8880a30c4d88d8f73a7a44a30e99b3e3470cceac7b075c329ad503ec425d9b2b",
+    "signature": "N+17p17hRFQihSrHQG2+IRwFXwVXf+ImMhBeFLWWMt00U25tBtqm5SD1Mr26ReKwfOLDYKG/8iYGhWPl0rTXBQ=="
   }
 ]
