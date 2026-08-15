@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786818916.578417,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "2646c8bf-d08b-4715-9c07-828011f7a5b3",
-    "payload_hash": "cfd2ae54c2aca8fb3b5a9293712e50bad65534b6f7083626f127c19c01ad1474",
-    "signature": "lDh5Fl8CtD8bzXjAC/K9tscCuy/ZUqlfKnm1socTCkWw+atLbgPQKZvt8PL8Nfc80+iztCR+VkDEmlJS/ShUAQ=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786820657.8868382,
     "priority": 2,
     "correlation_id": "",
@@ -113,5 +90,28 @@
     "id": "5374b614-2271-4157-9c66-4b12b6ea310b",
     "payload_hash": "d58d09aa1468716977888dcc1dc8d1e2018f65c9eeecb76b854d154b512ffafe",
     "signature": "9PpzwsFJYL9Czvrm+9lnr3EAY8mvph5uiWbkgiiHZOKDG2exDhAzECbPJdO3ri02jnFuULL1Hw0/UN/Yp8Z9Cw=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786827629.700459,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "37939c67-2f73-44a6-8e48-e018cf254d5f",
+    "payload_hash": "505b710c9ebd00d79301198df2a5e4c45ed66fc61f3c5b0d497fce7ff946c1bc",
+    "signature": "qVsbxz1AGGKV1YgS308o1C5gZwQROzsRCKaBjLQP6i84H89pR/ZQX9pIVJ0bw0eC8lVbTDQ+O6bFyEA/Ms4dCg=="
   }
 ]
