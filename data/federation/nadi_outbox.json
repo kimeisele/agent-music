@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786820657.8868382,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "37ac75e1-3765-4f2e-86d8-ea910eacfb28",
-    "payload_hash": "45e2970047b7324f699839f9e4bc2fca8b4ef4ae64056fecb5968d2c1bd71264",
-    "signature": "FWD3/5BxSGhK+w5XvdkUNlXiF4kw+Lhw1r/RkaWAvyW75Xfs+p0S9C7XKG/sEdbwY12E5hhS4N3cCjeLvq2DAQ=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786822557.6589606,
     "priority": 2,
     "correlation_id": "",
@@ -113,5 +90,28 @@
     "id": "37939c67-2f73-44a6-8e48-e018cf254d5f",
     "payload_hash": "505b710c9ebd00d79301198df2a5e4c45ed66fc61f3c5b0d497fce7ff946c1bc",
     "signature": "qVsbxz1AGGKV1YgS308o1C5gZwQROzsRCKaBjLQP6i84H89pR/ZQX9pIVJ0bw0eC8lVbTDQ+O6bFyEA/Ms4dCg=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786829738.8797941,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "5b6b3f7b-b001-4f44-9290-04419b2b743a",
+    "payload_hash": "4746e09831411195e5b04290a0e5214f758e41fc834ec49a7fdb31f272f1cfbe",
+    "signature": "Xdx5OgMM52BJg8jvxHQPA/pxzM5Ra0iTwdFHxq21mRp/o9beWk8u2Urz2//tPwhTajN8ef+SNMuQhKpgl3oOAA=="
   }
 ]
