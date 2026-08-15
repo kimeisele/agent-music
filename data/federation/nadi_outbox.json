@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786829738.8797941,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "5b6b3f7b-b001-4f44-9290-04419b2b743a",
-    "payload_hash": "4746e09831411195e5b04290a0e5214f758e41fc834ec49a7fdb31f272f1cfbe",
-    "signature": "Xdx5OgMM52BJg8jvxHQPA/pxzM5Ra0iTwdFHxq21mRp/o9beWk8u2Urz2//tPwhTajN8ef+SNMuQhKpgl3oOAA=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786831062.2112868,
     "priority": 2,
     "correlation_id": "",
@@ -113,5 +90,28 @@
     "id": "7030054f-cd6d-412e-92f2-4c1899b49946",
     "payload_hash": "30903ea3ab22db6bc85cda141b3e736923dd658c64bc17c84d26d083643cf666",
     "signature": "H9b8NzPFS0GEpM+MBvJ0HH5sYg5cw3ahF5hthJM8cq4IRPqf6XIj1SLU4h8K38R+/ozJ1zIDx1p1RSDGrsI6Aw=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786837773.8090992,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "375b7084-6ca2-4389-a15e-96532665cb4c",
+    "payload_hash": "fda752c538d2eedf0786c78899818f1724753f26a6d630bb907a139b40b41192",
+    "signature": "y+edNhRIjrTTqpd8CeymPoR9PvbamXOJcMXjBJT6kjBp3ExR7Opt9Op/yWgLfgep4B9lxdEWV5u9gqMLwv2tAw=="
   }
 ]
