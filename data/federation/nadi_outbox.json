@@ -14,98 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786831062.2112868,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "1b8372eb-de1b-45f4-ad51-ae1344630f3b",
-    "payload_hash": "4df23ec44fc977d706fe859d68b6ad38d3f168e56cb22ec706b5727464f9a416",
-    "signature": "VHknkhwjZin9sdpWWnlb5H8Xqrm0NbzdFFpEkYXqZb3FcvaHu7yjgkK1PKpIs8yGpR+hAZtaxNkN69/db8CNDQ=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
-    "timestamp": 1786833058.056562,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "e35f44e0-fb2f-4350-9bd8-84dcd0d89e2e",
-    "payload_hash": "b6a7ba660d257cc8df2d9aedccb6caa44e7263b2b84cace31ffb6b21fff3fc68",
-    "signature": "oe2oNnkuM69osfUzGS/euTocUag/79mzisacAKLl24fn/oeG9yzOjQyJkWk8hYeMr2YguHF+fxkIqjZUNKIACQ=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
-    "timestamp": 1786834766.0280514,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "205acb23-e9f3-4ce2-a734-271ce9b4dcc6",
-    "payload_hash": "a8cb0b197471dd875fbff38b3e9276aa6788d0f38815e9cba785f36416614ada",
-    "signature": "7lZoGuhMC3m1F1IrFDnRQ/bZ/fwiqFceiTjOREB6g/AXg4qihx5ldM98uKKT+CF+QTPekq9bQ/i7jsgNfKZ+Aw=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
-    "timestamp": 1786836532.38154,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "7030054f-cd6d-412e-92f2-4c1899b49946",
-    "payload_hash": "30903ea3ab22db6bc85cda141b3e736923dd658c64bc17c84d26d083643cf666",
-    "signature": "H9b8NzPFS0GEpM+MBvJ0HH5sYg5cw3ahF5hthJM8cq4IRPqf6XIj1SLU4h8K38R+/ozJ1zIDx1p1RSDGrsI6Aw=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786837773.8090992,
     "priority": 2,
     "correlation_id": "",
@@ -113,5 +21,28 @@
     "id": "375b7084-6ca2-4389-a15e-96532665cb4c",
     "payload_hash": "fda752c538d2eedf0786c78899818f1724753f26a6d630bb907a139b40b41192",
     "signature": "y+edNhRIjrTTqpd8CeymPoR9PvbamXOJcMXjBJT6kjBp3ExR7Opt9Op/yWgLfgep4B9lxdEWV5u9gqMLwv2tAw=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786844345.2314162,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "ee28d6c3-6e7e-4b4c-ac6a-db7645f6456d",
+    "payload_hash": "6fcdafbc937e441a76f0c9be3755cd18890798f54c94bd218a2cd2ea360c6bdf",
+    "signature": "5oo4fLmZ8YLvnUCidjwUM0vpqICNc90P7BeuT62yHDw/In7qFjmvYtZGyle9wGZxxdJFbchHEcUiHjymkZG0CA=="
   }
 ]
