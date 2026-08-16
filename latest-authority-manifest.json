@@ -1,0 +1,30 @@
+{
+  "artifacts": {
+    ".authority-exports/canonical-surface.json": {
+      "path": "bundles/87a3e9863457c1150ca5a5f7e6b61d25a7070fd8/.authority-exports/canonical-surface.json",
+      "sha256": "c0c6921029ef6ec6e9d6c4d634d1190d6b956f48a46738fe7c77682dc573bac3"
+    },
+    ".authority-exports/public-summary-registry.json": {
+      "path": "bundles/87a3e9863457c1150ca5a5f7e6b61d25a7070fd8/.authority-exports/public-summary-registry.json",
+      "sha256": "9ca3ece8d256293adfeb73eb87ef56c013b8562e19bbb344ce7a52b423df0a97"
+    },
+    ".authority-exports/source-surface-registry.json": {
+      "path": "bundles/87a3e9863457c1150ca5a5f7e6b61d25a7070fd8/.authority-exports/source-surface-registry.json",
+      "sha256": "58597e54f5e07bddae7ec8e21712af1dc174722babd11df56875ca6a950faecd"
+    },
+    ".authority-exports/surface-metadata.json": {
+      "path": "bundles/87a3e9863457c1150ca5a5f7e6b61d25a7070fd8/.authority-exports/surface-metadata.json",
+      "sha256": "f6e24074fb0deee41763a7c87708c80cb497f4c92f7d77fcab0f05ee7f4274e0"
+    }
+  },
+  "bundle": {
+    "kind": "source_authority_bundle",
+    "path": "bundles/87a3e9863457c1150ca5a5f7e6b61d25a7070fd8/source-authority-bundle.json",
+    "sha256": "cd085b3fa98b55cbcdc80529fd94f1f83e38ebb671b7bfb1a5a4105881cf0c33"
+  },
+  "contract_version": 1,
+  "generated_at": 0.0,
+  "kind": "source_authority_feed_manifest",
+  "source_repo_id": "agent-music",
+  "source_sha": "87a3e9863457c1150ca5a5f7e6b61d25a7070fd8"
+}

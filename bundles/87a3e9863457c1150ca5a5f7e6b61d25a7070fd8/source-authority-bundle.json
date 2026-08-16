@@ -1,0 +1,84 @@
+{
+  "artifact_paths": {
+    "canonical_surface": ".authority-exports/canonical-surface.json",
+    "public_summary_registry": ".authority-exports/public-summary-registry.json",
+    "source_surface_registry": ".authority-exports/source-surface-registry.json",
+    "surface_metadata": ".authority-exports/surface-metadata.json"
+  },
+  "authority_exports": [
+    {
+      "artifact_uri": ".authority-exports/canonical-surface.json",
+      "content_sha256": "7a4a619e754a4a277ed6c51705833b6193de67af83fb6e4f9c3050b22f055f5a",
+      "contract_version": 1,
+      "export_id": "agent-music/canonical_surface",
+      "export_kind": "canonical_surface",
+      "generated_at": 0.0,
+      "labels": {
+        "source_sha": "87a3e9863457c1150ca5a5f7e6b61d25a7070fd8"
+      },
+      "repo_id": "agent-music",
+      "version": "87a3e9863457c1150ca5a5f7e6b61d25a7070fd8"
+    },
+    {
+      "artifact_uri": ".authority-exports/public-summary-registry.json",
+      "content_sha256": "49e461cb25ac3e5238d5886504ab65c94cd148a58db1b22f6c82cec60c155f8c",
+      "contract_version": 1,
+      "export_id": "agent-music/public_summary_registry",
+      "export_kind": "public_summary_registry",
+      "generated_at": 0.0,
+      "labels": {
+        "source_sha": "87a3e9863457c1150ca5a5f7e6b61d25a7070fd8"
+      },
+      "repo_id": "agent-music",
+      "version": "87a3e9863457c1150ca5a5f7e6b61d25a7070fd8"
+    },
+    {
+      "artifact_uri": ".authority-exports/source-surface-registry.json",
+      "content_sha256": "aa4fc82daf68c8654af6e85052f0eab02606c13dbdb6462c289047491b1a72b5",
+      "contract_version": 1,
+      "export_id": "agent-music/source_surface_registry",
+      "export_kind": "source_surface_registry",
+      "generated_at": 0.0,
+      "labels": {
+        "source_sha": "87a3e9863457c1150ca5a5f7e6b61d25a7070fd8"
+      },
+      "repo_id": "agent-music",
+      "version": "87a3e9863457c1150ca5a5f7e6b61d25a7070fd8"
+    },
+    {
+      "artifact_uri": ".authority-exports/surface-metadata.json",
+      "content_sha256": "98e286ad39c55041a110565319bbfb10026a2115cc395adeea0dee6bdd2e2caa",
+      "contract_version": 1,
+      "export_id": "agent-music/surface_metadata",
+      "export_kind": "surface_metadata",
+      "generated_at": 0.0,
+      "labels": {
+        "source_sha": "87a3e9863457c1150ca5a5f7e6b61d25a7070fd8"
+      },
+      "repo_id": "agent-music",
+      "version": "87a3e9863457c1150ca5a5f7e6b61d25a7070fd8"
+    }
+  ],
+  "contract_version": 1,
+  "generated_at": 0.0,
+  "kind": "source_authority_bundle",
+  "repo_role": {
+    "consumes": [],
+    "exports": [
+      "canonical_surface",
+      "public_summary_registry",
+      "source_surface_registry",
+      "surface_metadata"
+    ],
+    "labels": {
+      "display_name": "Agent Music"
+    },
+    "owner_boundary": "agent_music_surface",
+    "publication_targets": [
+      "agent-music-public-wiki"
+    ],
+    "repo_id": "agent-music",
+    "role": "normative_source"
+  },
+  "source_sha": "87a3e9863457c1150ca5a5f7e6b61d25a7070fd8"
+}
