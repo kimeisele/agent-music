@@ -14,29 +14,6 @@
         "open-inquiry"
       ]
     },
-    "timestamp": 1786859175.4541776,
-    "priority": 2,
-    "correlation_id": "",
-    "ttl_s": 7200.0,
-    "id": "aa729deb-b05b-4e1b-933b-de788961fbd5",
-    "payload_hash": "f7a1fff3aaa124319ad9893f1ecbcbbbc4d68e2f5c7cb57c5cdd0252a8549c1a",
-    "signature": "7IielbDmvYBDDW6iJtGjxM7DMF90QAzmHZEPFW7wxapk4IVlMeFliGY19LIGQlUUYpRiYYSgrRbKynkeCEqwAQ=="
-  },
-  {
-    "source": "ag_bf3b7ca81a4ef0a1",
-    "target": "steward",
-    "operation": "federation.agent_claim",
-    "payload": {
-      "node_id": "ag_bf3b7ca81a4ef0a1",
-      "agent_name": "agent-music",
-      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
-      "capabilities": [
-        "authority-publishing",
-        "research-synthesis",
-        "cross-domain-analysis",
-        "open-inquiry"
-      ]
-    },
     "timestamp": 1786862818.6602373,
     "priority": 2,
     "correlation_id": "",
@@ -67,5 +44,28 @@
     "id": "a3cea469-3584-490c-b5a4-d6dca111c815",
     "payload_hash": "1caa529f95d250ad467b40ddb06e94715253b0e52a05cff63efe82d044a446d7",
     "signature": "TAdj7KihsxEcpm8/JvK1bE25Bc1WpbKS6AFUrA1kvT58akvWrX7yNgKFH+m6xezU48p96oj0IADpAF8WI3sIBQ=="
+  },
+  {
+    "source": "ag_bf3b7ca81a4ef0a1",
+    "target": "steward",
+    "operation": "federation.agent_claim",
+    "payload": {
+      "node_id": "ag_bf3b7ca81a4ef0a1",
+      "agent_name": "agent-music",
+      "public_key": "1b61ef953e452bc65cc816ee65d4a8b8bd96c7b0b3248eb2f77be3b9060ff34f",
+      "capabilities": [
+        "authority-publishing",
+        "research-synthesis",
+        "cross-domain-analysis",
+        "open-inquiry"
+      ]
+    },
+    "timestamp": 1786867321.8569849,
+    "priority": 2,
+    "correlation_id": "",
+    "ttl_s": 7200.0,
+    "id": "64edf184-8bd1-40c7-8d5e-f2bcf1bec204",
+    "payload_hash": "5d6ad6b214a04ba179cce37398e5db190ae0441faabe907791bd802c7dd13685",
+    "signature": "vBNTKEJ8iumvkYaSj8C4s98oZRXbdpnB0H4lDGX821FE8PwKiZ8aH46Ucm6DHMHHqWuSeQ/IRTVmyQGsgThTCw=="
   }
 ]
