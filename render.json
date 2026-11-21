@@ -1,0 +1,15 @@
+{
+  "audio_sha256": "d015f38c50d434d5e9847b65bb14e81e54550c9d9fc33556cb179f342286f81b",
+  "composition_sha256": "8c1d19b74ea8535c429f50ae12585373c8b92c60b95661994541fb4ce9302a8a",
+  "duration_sec": 53.82225,
+  "event_count": 45,
+  "loop_duration_sec": 17.94081,
+  "observed_at": "2026-11-21T11:16:34Z",
+  "repeat_count": 3,
+  "schema_version": 2,
+  "semantic_snapshot_sha256": "05f001a1369330e709027bdb321dd2dece07a78092d98d6018000c1aefcbeb01",
+  "state_changed": true,
+  "svg_sha256": "d8024d0c517d80a3223bfce40233c46a9b59fe44a533e9d77182e52c3492c95a",
+  "voice_count": 7,
+  "wav_sha256": "fb01a52d2a975eec4e57c91065c8d696c2901996677f1e42707f420d66a78dd1"
+}
